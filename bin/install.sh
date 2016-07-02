@@ -140,7 +140,8 @@ base() {
 	# install tlp with recommends
 	apt-get install -y tlp tlp-rdw
 
-	setup_sudo
+	# setup_sudo
+	set_download_temp
 
 	apt-get autoremove
 	apt-get autoclean
@@ -175,7 +176,11 @@ setup_sudo() {
 		echo -e "${USERNAME} ALL=NOPASSWD: /sbin/ifconfig, /sbin/ifup, /sbin/ifdown, /sbin/ifquery"; \
 	} >> /etc/sudoers
 
-	# setup downloads folder as tmpfs
+	
+}
+
+set_download_temp() {
+# setup downloads folder as tmpfs
 	# that way things are removed on reboot
 	# i like things clean but you may not want this
 	mkdir -p "/home/$USERNAME/Downloads"
