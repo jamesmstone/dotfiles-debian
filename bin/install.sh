@@ -280,7 +280,8 @@ install_golang() {
 	go get github.com/shurcooL/gostatus
 	go get github.com/shurcooL/markdownfmt
 	go get github.com/Soulou/curl-unix-socket
-
+	)
+	
 	aliases=( cloudflare/cfssl docker/docker kubernetes/kubernetes letsencrypt/boulder opencontainers/runc jfrazelle/binctr jfrazelle/contained.af )
 	for project in "${aliases[@]}"; do
 		owner=$(dirname "$project")
