@@ -170,7 +170,7 @@ setup_sudo() {
 
 	# add go path to secure path
 	{ \
-		echo -e 'Defaults	secure_path="/usr/local/go/bin:/home/jessie/.go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"'; \
+		echo -e 'Defaults	secure_path="/usr/local/go/bin:/home/james/.go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"'; \
 		echo -e 'Defaults	env_keep += "ftp_proxy http_proxy https_proxy no_proxy GOPATH EDITOR"'; \
 		echo -e "${USERNAME} ALL=(ALL) NOPASSWD:ALL"; \
 		echo -e "${USERNAME} ALL=NOPASSWD: /sbin/ifconfig, /sbin/ifup, /sbin/ifdown, /sbin/ifquery"; \
@@ -199,8 +199,8 @@ install_docker() {
 		-C /usr/local/bin --strip-components 1
 	chmod +x /usr/local/bin/docker*
 
-	curl -sSL https://raw.githubusercontent.com/jfrazelle/dotfiles/master/etc/systemd/system/docker.service > /etc/systemd/system/docker.service
-	curl -sSL https://raw.githubusercontent.com/jfrazelle/dotfiles/master/etc/systemd/system/docker.socket > /etc/systemd/system/docker.socket
+	curl -sSL https://raw.githubusercontent.com/jamesmstone/dotfiles/master/etc/systemd/system/docker.service > /etc/systemd/system/docker.service
+	curl -sSL https://raw.githubusercontent.com/jamesmstone/dotfiles/master/etc/systemd/system/docker.socket > /etc/systemd/system/docker.socket
 
 	systemctl daemon-reload
 	systemctl enable docker
