@@ -24,6 +24,9 @@ floating_modifier $mod
 # start a terminal
 bindsym $mod+Return exec i3-sensible-terminal
 
+# start a program
+bindsym $mod+d exec dmenu_run
+
 # kill focused window
 bindsym $mod+Shift+q kill
 
