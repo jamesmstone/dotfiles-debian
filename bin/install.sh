@@ -16,6 +16,13 @@ check_is_sudo() {
 	fi
 }
 
+system_76_drivers() {
+	check_is_sudo
+	apt-add-repository ppa:system76-dev/stable -y
+	apt update
+	apt install system76-driver -y
+}
+
 # sets up apt sources
 # assumes you are going to use debian stretch
 setup_sources() {
@@ -150,6 +157,7 @@ base() {
 	install_docker
 	install_scripts
 	install_syncthing
+	system_76_drivers
 }
 
 # setup sudo for a user
