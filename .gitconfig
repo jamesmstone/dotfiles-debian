@@ -164,7 +164,7 @@
 #[remote "origin"]
 	#fetch = +refs/pull/*/head:refs/remotes/origin/pull/*
 [github]
-	user = jfrazelle
+	user = jamesmstone
 #[init]
 #	templatedir = ~/.git_template/template
 [commit]
