@@ -954,6 +954,65 @@ yubico_piv_tool(){
 alias yubico-piv-tool="yubico_piv_tool"
 
 
+#
+# IDE related
+#
+atom(){
+    #Instalation
+    # wget http://raw.githubusercontent.com/jfrazelle/dockerfiles/master/atom/Dockerfile
+    # docker build -t atom
+
+    del_stopped atom
+
+    docker run -it --rm \
+        --name atom \
+        --net host \
+        --memory 1gb \
+        --device /dev/snd \
+        --device /dev/dri \
+        --device /dev/video0 \
+        -e DISPLAY=unix$DISPLAY \
+        -v /etc/localtime:/etc/localtime:ro \
+        -v /tmp/.X11-unix:/tmp/.X11-unix \
+        -v /dev/shm:/dev/shm \
+        -v ~/.docker/atom/.atom:/root/.atom \
+        -v ~/.docker/atom/.config:/root/.config \
+        atom
+}
+
+#
+# Javascript related
+#
+node(){
+    del_stopped node
+        #-v $HOME/.docker/node:/usr/local/lib \
+    docker run -it --rm \
+        -v /etc/localtime:/etc/localtime:ro \
+        -v $(pwd):/app \
+        -w /app \
+        node node "$@"
+}
+npm(){
+    del_stopped node
+        #-v $HOME/.docker/node:/usr/local/lib \
+    docker run -it --rm \
+        -v /etc/localtime:/etc/localtime:ro \
+        -v $(pwd):/app \
+        -w /app \
+        node npm "$@"
+}
+tns(){
+    del_stopped tns
+
+    docker run -it --rm \
+        --privileged \
+        --name tns \
+        -v /etc/localtime:/etc/localtime:ro \
+        -v /dev/bus/usb:/dev/bus/usb \
+        -v $(pwd):/src \
+        oreng/nativescript tns "$@"
+}
+
 ###
 ### Awesome sauce by @jpetazzo
 ###
