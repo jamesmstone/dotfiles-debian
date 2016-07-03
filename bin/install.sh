@@ -92,9 +92,7 @@ base() {
 	apt-get update
 	apt-get -y upgrade
 	
-	install_docker
-	install_scripts
-	install_syncthing
+	
 	system_76_drivers
 	
 	# install tlp with recommends
@@ -156,13 +154,13 @@ base() {
 		zip \
 		--no-install-recommends
 
-
+	install_docker
+	install_scripts
+	install_syncthing
 
 	apt-get autoremove
 	apt-get autoclean
 	apt-get clean
-
-
 }
 
 # setup sudo for a user
