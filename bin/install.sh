@@ -224,7 +224,7 @@ install_golang() {
 	)
 
 	# get commandline tools
-	(
+	
 	set -x
 	set +e
 	go get github.com/golang/lint/golint
@@ -309,7 +309,7 @@ install_golang() {
 	base=$(basename "$dir")
 	ln -snvf "$dir" "${HOME}/${base}"
 done
-)
+
 }
 
 # install graphics drivers
