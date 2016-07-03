@@ -80,6 +80,17 @@ setup_sources() {
 base() {
 	apt-get update
 	apt-get -y upgrade
+	
+	install_docker
+	install_scripts
+	install_syncthing
+	system_76_drivers
+	
+	# install tlp with recommends
+	apt-get install -y tlp tlp-rdw
+
+	# setup_sudo
+	set_download_temp
 
 	apt-get install -y \
 		adduser \
@@ -134,20 +145,13 @@ base() {
 		zip \
 		--no-install-recommends
 
-	# install tlp with recommends
-	apt-get install -y tlp tlp-rdw
 
-	# setup_sudo
-	set_download_temp
 
 	apt-get autoremove
 	apt-get autoclean
 	apt-get clean
 
-	install_docker
-	install_scripts
-	install_syncthing
-	system_76_drivers
+
 }
 
 # setup sudo for a user
