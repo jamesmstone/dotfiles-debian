@@ -45,6 +45,8 @@ setup_sources() {
 	# neovim
 	deb http://ppa.launchpad.net/neovim-ppa/unstable/ubuntu xenial main
 	deb-src http://ppa.launchpad.net/neovim-ppa/unstable/ubuntu xenial main
+	
+	deb http://au.archive.ubuntu.com/ubuntu xenial main 
 	EOF
 
 	# tlp: Advanced Linux Power Management
