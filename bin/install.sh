@@ -32,34 +32,19 @@ setup_sources() {
 		--no-install-recommends
 
 	cat <<-EOF > /etc/apt/sources.list
-	deb http://httpredir.debian.org/debian stretch main contrib non-free
-	deb-src http://httpredir.debian.org/debian/ stretch main contrib non-free
-
-	deb http://httpredir.debian.org/debian/ stretch-updates main contrib non-free
-	deb-src http://httpredir.debian.org/debian/ stretch-updates main contrib non-free
-
-	deb http://security.debian.org/ stretch/updates main contrib non-free
-	deb-src http://security.debian.org/ stretch/updates main contrib non-free
-
-	#deb http://httpredir.debian.org/debian/ jessie-backports main contrib non-free
-	#deb-src http://httpredir.debian.org/debian/ jessie-backports main contrib non-free
-
-	deb http://httpredir.debian.org/debian experimental main contrib non-free
-	deb-src http://httpredir.debian.org/debian experimental main contrib non-free
 
 	# hack for latest git (don't judge)
-	deb http://ppa.launchpad.net/git-core/ppa/ubuntu wily main
-	deb-src http://ppa.launchpad.net/git-core/ppa/ubuntu wily main
-
+	deb http://ppa.launchpad.net/git-core/ppa/ubuntu xenial main
+	deb-src http://ppa.launchpad.net/git-core/ppa/ubuntu xenial main
 	# neovim
-	deb http://ppa.launchpad.net/neovim-ppa/unstable/ubuntu wily main
-	deb-src http://ppa.launchpad.net/neovim-ppa/unstable/ubuntu wily main
+	deb http://ppa.launchpad.net/neovim-ppa/unstable/ubuntu xenial main
+	deb-src http://ppa.launchpad.net/neovim-ppa/unstable/ubuntu xenial main
+	EOF
 
 	# tlp: Advanced Linux Power Management
 	# http://linrunner.de/en/tlp/docs/tlp-linux-advanced-power-management.html
-	deb http://repo.linrunner.de/debian sid main
-	EOF
-
+	add-apt-repository ppa:linrunner/tlp
+	
 	# add docker apt repo
 	cat <<-EOF > /etc/apt/sources.list.d/docker.list
 	deb https://apt.dockerproject.org/repo debian-stretch main
@@ -76,8 +61,6 @@ setup_sources() {
 	# add the neovim ppa gpg key
 	apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 9DBB0BE9366964F134855E2255F96FCF8231B6DD
 
-	# add the tlp apt-repo gpg key
-	apt-key adv --keyserver pool.sks-keyservers.net --recv-keys CD4E8809
 
 	# turn off translations, speed up apt-get update
 	mkdir -p /etc/apt/apt.conf.d
@@ -441,7 +424,7 @@ get_dotfiles() {
 	cd "/home/$USERNAME"
 
 	# install dotfiles from repo
-	git clone git@github.com:jfrazelle/dotfiles.git "/home/$USERNAME/dotfiles"
+	git clone git@github.com:jamesmstone/dotfiles.git "/home/$USERNAME/dotfiles"
 	cd "/home/$USERNAME/dotfiles"
 
 	# installs all the things
@@ -456,7 +439,7 @@ get_dotfiles() {
 	cd "/home/$USERNAME"
 
 	# install .vim files
-	git clone --recursive git@github.com:jfrazelle/.vim.git "/home/$USERNAME/.vim"
+	git clone --recursive git@github.com:jamesmstone/.vim.git "/home/$USERNAME/.vim"
 	ln -snf "/home/$USERNAME/.vim/vimrc" "/home/$USERNAME/.vimrc"
 	sudo ln -snf "/home/$USERNAME/.vim" /root/.vim
 	sudo ln -snf "/home/$USERNAME/.vimrc" /root/.vimrc
@@ -568,6 +551,8 @@ main() {
 		setup_sources
 
 		base
+	elif [[ $cmd == "system_76" ]]; then
+		system_76_drivers
 	elif [[ $cmd == "wifi" ]]; then
 		install_wifi "$2"
 	elif [[ $cmd == "graphics" ]]; then
