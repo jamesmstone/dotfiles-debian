@@ -117,7 +117,6 @@ base() {
 		network-manager \
 		openvpn \
 		rxvt-unicode-256color \
-		s3cmd \
 		scdaemon \
 		silversearcher-ag \
 		ssh \
