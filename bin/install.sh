@@ -30,7 +30,7 @@ setup_sources() {
 	apt-get install -y \
 		apt-transport-https \
 		--no-install-recommends
-	add-apt-repository universe
+	add-apt-repository universe -y
 	cat <<-EOF > /etc/apt/sources.list
 
 	# hack for latest git (don't judge)
@@ -43,7 +43,7 @@ setup_sources() {
 
 	# tlp: Advanced Linux Power Management
 	# http://linrunner.de/en/tlp/docs/tlp-linux-advanced-power-management.html
-	add-apt-repository ppa:linrunner/tlp
+	add-apt-repository ppa:linrunner/tlp -y
 	
 	# add docker apt repo
 	cat <<-EOF > /etc/apt/sources.list.d/docker.list
