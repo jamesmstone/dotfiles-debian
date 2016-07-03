@@ -30,7 +30,7 @@ setup_sources() {
 	apt-get install -y \
 		apt-transport-https \
 		--no-install-recommends
-
+	add-apt-repository universe
 	cat <<-EOF > /etc/apt/sources.list
 
 	# hack for latest git (don't judge)
