@@ -465,7 +465,8 @@ nginx(){
 		nginx
 
 	# add domain to hosts & open nginx
-	sudo hostess add jess 127.0.0.1
+	sudo hostess add james 127.0.0.1
+	sudo hostess add localhost 127.0.0.1
 }
 nmap(){
 	docker run --rm -it \
@@ -697,7 +698,7 @@ slack(){
 		--device /dev/video0 \
 		--group-add audio \
 		--group-add video \
-		-v /home/jessie/.slack:/root/.config/Slack \
+		-v $HOME/.slack:/root/.config/Slack \
 		--name slack \
 		${DOCKER_REPO_PREFIX}/slack
 }
@@ -707,6 +708,8 @@ spotify(){
 	docker run -d \
 		-v /etc/localtime:/etc/localtime:ro \
 		-v /tmp/.X11-unix:/tmp/.X11-unix \
+		-v $HOME/.spotify/cache:/home/spotify/.cache \
+		-v $HOME/.spotify/config:/home/spotify/.config \
 		-e DISPLAY=unix$DISPLAY \
 		-e QT_DEVICE_PIXEL_RATIO \
 		--security-opt seccomp:unconfined \
