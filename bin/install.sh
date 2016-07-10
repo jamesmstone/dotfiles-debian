@@ -80,7 +80,6 @@ setup_sources() {
 	# add the neovim ppa gpg key
 	apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 9DBB0BE9366964F134855E2255F96FCF8231B6DD
 
-
 	# turn off translations, speed up apt-get update
 	mkdir -p /etc/apt/apt.conf.d
 	echo 'Acquire::Languages "none";' > /etc/apt/apt.conf.d/99translations
@@ -369,14 +368,6 @@ install_scripts() {
 	curl -sSL https://raw.githubusercontent.com/tehmaze/lolcat/master/lolcat > /usr/local/bin/lolcat
 	chmod +x /usr/local/bin/lolcat
 
-	# download syncthing binary
-	if [[ ! -f /usr/local/bin/syncthing ]]; then
-		curl -sSL https://jesss.s3.amazonaws.com/binaries/syncthing > /usr/local/bin/syncthing
-		chmod +x /usr/local/bin/syncthing
-	fi
-
-	syncthing -upgrade
-
 	local scripts=( go-md2man have light )
 
 	for script in "${scripts[@]}"; do
@@ -387,7 +378,16 @@ install_scripts() {
 
 # install syncthing
 install_syncthing() {
-	curl -sSL https://raw.githubusercontent.com/jfrazelle/dotfiles/master/etc/systemd/system/syncthing@.service > /etc/systemd/system/syncthing@.service
+	check_is_sudo
+	# Add the release PGP keys:
+	curl -s https://syncthing.net/release-key.txt | sudo apt-key add -
+
+	# Add the "release" channel to your APT sources:
+	echo "deb http://apt.syncthing.net/ syncthing release" | sudo tee /etc/apt/sources.list.d/syncthing.list
+
+	# Update and install syncthing:
+	apt-get update
+	apt-get install syncthing
 
 	systemctl daemon-reload
 	systemctl enable "syncthing@${USERNAME}"
