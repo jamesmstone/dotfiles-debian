@@ -236,7 +236,7 @@ chromium(){
 		--device /dev/bus/usb \
 		--group-add audio \
 		--group-add video \
-		--name chromiumf \
+		--name chromium \
 		${DOCKER_REPO_PREFIX}/chromium --user-data-dir=/data \
 		--proxy-server="$proxy" \
 		--host-resolver-rules="$map" $args
