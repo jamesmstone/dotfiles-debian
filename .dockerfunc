@@ -66,6 +66,34 @@ nginx_config(){
 }
 
 #
+# Languages
+#
+
+haskell(){
+	docker run -it --rm haskell "$@"
+}
+
+python(){
+	docker run -it --rm --name python \
+		-v "$PWD":/usr/src/myapp \
+		-w /usr/src/myapp \
+		python:3 python "$@"
+}
+python2(){
+	docker run -it --rm --name python \
+		-v "$PWD":/usr/src/myapp \
+		-w /usr/src/myapp \
+		python:2 python "$@"
+}
+
+java(){
+	docker run -it --rm -v "$(pwd)":/java -w /java java java "$@"
+}
+
+javac(){
+	docker run -it --rm -v "$(pwd)":/java -w /java java javac "$@"
+}
+#
 # Container Aliases
 #
 apt_file(){
@@ -171,8 +199,50 @@ chrome(){
 		${DOCKER_REPO_PREFIX}/chrome --user-data-dir=/data \
 		--proxy-server="$proxy" \
 		--host-resolver-rules="$map" $args
-
 }
+
+chromium(){
+	# add flags for proxy if passed
+	local proxy=
+	local map=
+	local args=$@
+	if [[ "$1" == "tor" ]]; then
+		relies_on torproxy
+
+		map="MAP * ~NOTFOUND , EXCLUDE torproxy"
+		proxy="socks5://torproxy:9050"
+		args="https://check.torproject.org/api/ip ${@:2}"
+	fi
+
+	del_stopped chromium
+
+	# one day remove /etc/hosts bind mount when effing
+	# overlay support inotify, such bullshit
+	sudo docker run -d \
+		--memory 3gb \
+		-v /etc/localtime:/etc/localtime:ro \
+		-v /tmp/.X11-unix:/tmp/.X11-unix \
+		-e DISPLAY=unix$DISPLAY \
+		-v $HOME/Downloads:/root/Downloads \
+		-v $HOME/Pictures:/root/Pictures \
+		-v $HOME/Torrents:/root/Torrents \
+		-v $HOME/.chrome:/data \
+		-v /dev/shm:/dev/shm \
+		-v /etc/hosts:/etc/hosts \
+		--security-opt seccomp:/etc/docker/seccomp/chrome.json \
+		--device /dev/snd \
+		--device /dev/dri \
+		--device /dev/video0 \
+		--device /dev/bus/usb \
+		--group-add audio \
+		--group-add video \
+		--name chromiumf \
+		${DOCKER_REPO_PREFIX}/chromium --user-data-dir=/data \
+		--proxy-server="$proxy" \
+		--host-resolver-rules="$map" $args
+}
+
+
 consul(){
 	del_stopped consul
 
@@ -210,6 +280,18 @@ dcos(){
 		-v $(pwd):/root/apps \
 		-w /root/apps \
 		${DOCKER_REPO_PREFIX}/dcos-cli "$@"
+}
+eclipse(){
+	del_stopped eclipse
+
+	docker run -ti --rm \
+	         -e DISPLAY=$DISPLAY \
+		 -v /tmp/.X11-unix:/tmp/.X11-unix \
+		 -v "$(pwd)/.eclipse":/home/developer \
+		 -v "$(pwd)":/workspace \
+		 --name eclipse \
+	    fgrehm/eclipse:v4.4.1
+
 }
 firefox(){
 	del_stopped firefox
@@ -386,6 +468,13 @@ mpd(){
 		--name mpd \
 		${DOCKER_REPO_PREFIX}/mpd
 }
+mupdf(){
+	docker run --rm \
+		-v "$(pwd)":/pdf \
+		-v /tmp/.X11-unix:/tmp/.X11-unix \
+    -e DISPLAY=unix$DISPLAY \
+		turchinc/xenial-mupdf mupdf /pdf/"$@"
+}
 mutt(){
 	# subshell so we dont overwrite variables
 	(
@@ -436,6 +525,17 @@ neoman(){
 		--device /dev/usb \
 		--name neoman \
 		${DOCKER_REPO_PREFIX}/neoman
+}
+neovim(){
+	del_stopped neovim
+
+	docker run -it \
+	    -v $HOME/.config/nvim:/root/.config/nvim \
+	    -v "$(pwd)":/data \
+	    --workdir /data \
+	    --name neovim \
+	    erroneousboat/neovim \
+	    "$@"
 }
 nes(){
 	del_stopped nes
@@ -550,18 +650,18 @@ privoxy(){
 
 	sudo hostess add privoxy $(docker inspect --format "{{.NetworkSettings.Networks.bridge.IPAddress}}" privoxy)
 }
-pulseaudio(){
-	del_stopped pulseaudio
-
-	docker run -d \
-		-v /etc/localtime:/etc/localtime:ro \
-		--device /dev/snd \
-		-p 4713:4713 \
-		--restart always \
-		--group-add audio \
-		--name pulseaudio \
-		${DOCKER_REPO_PREFIX}/pulseaudio
-}
+# pulseaudio(){
+# 	del_stopped pulseaudio
+#
+# 	docker run -d \
+# 		-v /etc/localtime:/etc/localtime:ro \
+# 		--device /dev/snd \
+# 		-p 4713:4713 \
+# 		--restart always \
+# 		--group-add audio \
+# 		--name pulseaudio \
+# 		${DOCKER_REPO_PREFIX}/pulseaudio
+# }
 rainbowstream(){
 	docker run -it --rm \
 		-v /etc/localtime:/etc/localtime:ro \
@@ -745,6 +845,27 @@ steam(){
 		--name steam \
 		${DOCKER_REPO_PREFIX}/steam
 }
+#syncthing(){
+#	local DOCKER_CONTENT_TRUST=0
+	#docker run -d \
+	#	 --restart=always \
+	#	 -v /srv/sync:/srv/data \
+	#	 -v /srv/syncthing:/srv/config \
+	#	 -v $HOME/sync:/srv/data/sync \
+	#	 -p 22000:22000  -p 21025:21025/udp -p 8080:8080 \
+	#	 --name syncthing \
+	#	 joeybaker/syncthing
+#	docker run -d --name=syncthing \
+#		  --restart=on-failure:20 \
+#		  -v /opt/appdata/syncthing:/config \
+#		  -v $HOME:/sync/james \
+#		  -p 8384:8384/tcp \
+#		  -p 22000:22000/tcp \
+#		  -p 21025:21025/udp \
+#		  -p 8080:8080/tcp\
+#		  gbrks/syncthing
+
+#}
 t(){
 	docker run -t --rm \
 		-v $HOME/.trc:/root/.trc \
@@ -800,7 +921,7 @@ torbrowser(){
 		${DOCKER_REPO_PREFIX}/tor-browser
 
 	# exit current shell
-	exit 0
+	# exit 0
 }
 tormessenger(){
 	del_stopped tormessenger
@@ -875,6 +996,14 @@ virt_viewer(){
 		--log-driver none \
 		--net container:kvm \
 		${DOCKER_REPO_PREFIX}/virt-viewer "$@"
+}
+virtualbox(){
+	docker run -d \
+	 	-v /tmp/.X11-unix:/tmp/.X11-unix \
+		-e DISPLAY=unix$DISPLAY \
+		--privileged \
+		--name virtualbox \
+		${DOCKER_REPO_PREFIX}/virtualbox
 }
 alias virt-viewer="virt_viewer"
 visualstudio(){
@@ -979,8 +1108,26 @@ atom(){
         -v /dev/shm:/dev/shm \
         -v ~/.docker/atom/.atom:/root/.atom \
         -v ~/.docker/atom/.config:/root/.config \
-        atom
+	-v "$(pwd)":/data \
+	--workdir /data \
+         ${DOCKER_REPO_PREFIX}/atom \
+	 "$@"
 }
+
+idea(){
+GOPATH="$(pwd)"
+PREF_DIR=${HOME}/dotfiles/IDEA
+
+docker run -tdi \
+           --net="host" \
+           --privileged=true \
+           -e DISPLAY=${DISPLAY} \
+           -v /tmp/.X11-unix:/tmp/.X11-unix \
+           -v ${PREF_DIR}:/home/developer/.IdeaIC2016.1 \
+           -v "${GOPATH}":/home/developer/go \
+           jamesmstone/docker-intellij
+}
+
 
 #
 # Javascript related
@@ -1015,6 +1162,15 @@ tns(){
         oreng/nativescript tns "$@"
 }
 
+ws(){		# Webserver current dir
+    local port=4321
+    open "http://172.17.0.1:${port}" && docker run \
+	-p $port:80 \
+	-v $PWD:/usr/share/nginx/html:ro \
+	 --rm \
+	 nginx
+}
+
 ###
 ### Awesome sauce by @jpetazzo
 ###
@@ -1040,4 +1196,9 @@ command_not_found_handle () {
 		-v /home:/home \
 		-v /tmp/.X11-unix:/tmp/.X11-unix \
 		"${DOCKER_REPO_PREFIX}/$@"
+}
+
+
+ubuntu_playground(){
+	 docker run -it -v "$(pwd)":/home/james --rm ubuntu bash
 }
