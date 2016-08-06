@@ -34,7 +34,7 @@ export QT_DEVICE_PIXEL_RATIO=2
 # turn on go vendoring experiment
 export GO15VENDOREXPERIMENT=1
 # turn on secure docker
-export DOCKER_CONTENT_TRUST=1
+export DOCKER_CONTENT_TRUST=0
 
 # shortcut to current uni dir
 export sem="'$HOME/Uni/2016/Semester 2/'"
