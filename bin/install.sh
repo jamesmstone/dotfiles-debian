@@ -425,7 +425,7 @@ install_wmapps() {
 	curl -sSL https://raw.githubusercontent.com/jamesmstone/dotfiles/master/etc/X11/xorg.conf > /etc/X11/xorg.conf
 
 	# get correct sound cards on boot
-	curl -sSL https://raw.githubusercontent.com/jamesmstone/dotfiles/master/etc/modprobe.d/intel.conf > /etc/modprobe.d/intel.conf
+	# curl -sSL https://raw.githubusercontent.com/jamesmstone/dotfiles/master/etc/modprobe.d/intel.conf > /etc/modprobe.d/intel.conf
 
 	# pretty fonts
 	curl -sSL https://raw.githubusercontent.com/jamesmstone/dotfiles/master/etc/fonts/local.conf > /etc/fonts/local.conf
