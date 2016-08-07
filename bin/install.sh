@@ -419,16 +419,16 @@ install_wmapps() {
 
 	# update clickpad settings
 	mkdir -p /etc/X11/xorg.conf.d/
-	curl -sSL https://raw.githubusercontent.com/jfrazelle/dotfiles/master/etc/X11/xorg.conf.d/50-synaptics-clickpad.conf > /etc/X11/xorg.conf.d/50-synaptics-clickpad.conf
+	curl -sSL https://raw.githubusercontent.com/jamesmstone/dotfiles/master/etc/X11/xorg.conf.d/50-synaptics-clickpad.conf > /etc/X11/xorg.conf.d/50-synaptics-clickpad.conf
 
 	# add xorg conf
-	curl -sSL https://raw.githubusercontent.com/jfrazelle/dotfiles/master/etc/X11/xorg.conf > /etc/X11/xorg.conf
+	curl -sSL https://raw.githubusercontent.com/jamesmstone/dotfiles/master/etc/X11/xorg.conf > /etc/X11/xorg.conf
 
 	# get correct sound cards on boot
-	curl -sSL https://raw.githubusercontent.com/jfrazelle/dotfiles/master/etc/modprobe.d/intel.conf > /etc/modprobe.d/intel.conf
+	curl -sSL https://raw.githubusercontent.com/jamesmstone/dotfiles/master/etc/modprobe.d/intel.conf > /etc/modprobe.d/intel.conf
 
 	# pretty fonts
-	curl -sSL https://raw.githubusercontent.com/jfrazelle/dotfiles/master/etc/fonts/local.conf > /etc/fonts/local.conf
+	curl -sSL https://raw.githubusercontent.com/jamesmstone/dotfiles/master/etc/fonts/local.conf > /etc/fonts/local.conf
 
 	echo "Fonts file setup successfully now run:"
 	echo "	dpkg-reconfigure fontconfig-config"
