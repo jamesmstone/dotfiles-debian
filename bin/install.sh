@@ -53,10 +53,7 @@ setup_sources() {
 	# hack for latest git (don't judge)
 	deb http://ppa.launchpad.net/git-core/ppa/ubuntu xenial main
 	deb-src http://ppa.launchpad.net/git-core/ppa/ubuntu xenial main
-	# neovim
-	deb http://ppa.launchpad.net/neovim-ppa/unstable/ubuntu xenial main
-	deb-src http://ppa.launchpad.net/neovim-ppa/unstable/ubuntu xenial main
-	
+
 	deb http://au.archive.ubuntu.com/ubuntu xenial main 
 	EOF
 
@@ -76,9 +73,6 @@ setup_sources() {
 
 	# add the git-core ppa gpg key
 	apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys E1DD270288B4E6030699E45FA1715D88E1DF1F24
-
-	# add the neovim ppa gpg key
-	apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 9DBB0BE9366964F134855E2255F96FCF8231B6DD
 
 	# turn off translations, speed up apt-get update
 	mkdir -p /etc/apt/apt.conf.d
@@ -570,6 +564,9 @@ main() {
 		# setup /etc/apt/sources.list
 		setup_sources
 
+		base
+	elif [[ $cmd == "base" ]]; then
+		check_is_sudo
 		base
 	elif [[ $cmd == "system_76" ]]; then
 		system_76_drivers
