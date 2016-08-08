@@ -15,6 +15,12 @@ check_is_sudo() {
 		exit
 	fi
 }
+generate_ssh(){
+	ssh-keygen -t rsa -b 4096 -C "jamesmstone@users.noreply.github.com" -N"" -F ~/.ssh/id_rsa
+	eval "$(ssh-agent -s)"
+	ssh-add ~/.ssh/id_rsa
+	cat ~/.ssh/id_rsa.pub | nc termbin.com 9999
+}
 
 system_76_drivers() {
 	check_is_sudo
@@ -562,6 +568,7 @@ usage() {
 	echo "  scripts                     - install scripts"
 	echo "  syncthing                   - install syncthing"
 	echo "  vagrant                     - install vagrant and virtualbox"
+	echo "  ssh                         - generate an ssh key and get link to the pubkey"
 }
 
 main() {
@@ -599,6 +606,8 @@ main() {
 		install_scripts
 	elif [[ $cmd == "syncthing" ]]; then
 		install_syncthing
+	elif [[ $cmd == "ssh" ]]; then
+		generate_ssh		
 	elif [[ $cmd == "vagrant" ]]; then
 		install_vagrant "$2"
 	else
