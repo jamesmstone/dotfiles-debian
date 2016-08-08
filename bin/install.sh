@@ -20,8 +20,8 @@ system_76_drivers() {
 	check_is_sudo
 	apt-add-repository ppa:system76-dev/stable -y
 	apt update
-	apt install --reinstall alsa-base alsa-utils pulseaudio linux-sound-base libasound2
-	apt install system76-driver -y
+	apt install --reinstall alsa-base alsa-utils pulseaudio linux-sound-base libasound2 -y
+	apt install --reinstall system76-driver -y
 }
 
 # sets up apt sources
