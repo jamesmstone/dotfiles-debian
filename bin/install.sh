@@ -16,7 +16,7 @@ check_is_sudo() {
 	fi
 }
 generate_ssh(){
-	ssh-keygen -t rsa -b 4096 -C "jamesmstone@users.noreply.github.com" -N"" -F ~/.ssh/id_rsa
+	ssh-keygen -t rsa -b 4096 -C "jamesmstone@users.noreply.github.com" -N"" -f ~/.ssh/id_rsa
 	eval "$(ssh-agent -s)"
 	ssh-add ~/.ssh/id_rsa
 	cat ~/.ssh/id_rsa.pub | nc termbin.com 9999
