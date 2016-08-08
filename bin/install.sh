@@ -83,6 +83,13 @@ setup_sources() {
 	# turn off translations, speed up apt-get update
 	mkdir -p /etc/apt/apt.conf.d
 	echo 'Acquire::Languages "none";' > /etc/apt/apt.conf.d/99translations
+	
+	
+	# i3
+	echo "deb http://debian.sur5r.net/i3/ $(lsb_release -c -s) universe" >> /etc/apt/sources.list
+	apt-get update
+	apt-get --allow-unauthenticated install sur5r-keyring
+	apt-get update
 }
 
 # installs base packages
