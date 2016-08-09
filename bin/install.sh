@@ -106,8 +106,6 @@ base() {
 	apt-get -y upgrade
 	
 	
-	system_76_drivers
-	
 	# install tlp with recommends
 	apt-get install -y tlp tlp-rdw
 
@@ -166,7 +164,8 @@ base() {
 		xz-utils \
 		zip \
 		--no-install-recommends
-
+		
+	system_76_drivers
 	install_docker
 	install_scripts
 	# install_syncthing
