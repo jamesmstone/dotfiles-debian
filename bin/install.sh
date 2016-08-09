@@ -427,7 +427,7 @@ install_wifi() {
 
 # install stuff for i3 window manager
 install_wmapps() {
-	local pkgs="feh i3 i3lock i3status scrot xserver-xorg xserver-xorg-core xfonts-base xinit x11-xserver-utils x11-apps x11-session-utils x11-utils xinput xorg lightdm lightdm-gtk-greeter neovim"
+	local pkgs="feh i3 i3lock i3status dmenu scrot xserver-xorg xserver-xorg-core xfonts-base xinit x11-xserver-utils x11-apps x11-session-utils x11-utils xinput xorg lightdm lightdm-gtk-greeter neovim"
 
 	apt-get install --reinstall -y $pkgs --no-install-recommends
 
