@@ -38,11 +38,11 @@ setup_sources() {
 		apt-transport-https \
 		--no-install-recommends
 		
-	# add-apt-repository universe -y
-	# add-apt-repository main -y
-	# add-apt-repository universe -y
-	# add-apt-repository restricted -y
-	# add-apt-repository multiverse -y
+	add-apt-repository universe -y
+	add-apt-repository main -y
+	add-apt-repository universe -y
+	add-apt-repository restricted -y
+	add-apt-repository multiverse -y
 	
 	cat <<-EOF > /etc/apt/sources.list
 	###### Ubuntu Main Repos
