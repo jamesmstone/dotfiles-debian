@@ -38,22 +38,22 @@ setup_sources() {
 		apt-transport-https \
 		--no-install-recommends
 		
-	add-apt-repository universe -y
-	add-apt-repository main -y
-	add-apt-repository universe -y
-	add-apt-repository restricted -y
-	add-apt-repository multiverse -y
+	# add-apt-repository universe -y
+	# add-apt-repository main -y
+	# add-apt-repository universe -y
+	# add-apt-repository restricted -y
+	# add-apt-repository multiverse -y
 	
 	cat <<-EOF > /etc/apt/sources.list
 	###### Ubuntu Main Repos
-	deb http://au.archive.ubuntu.com/ubuntu/ xenial main restricted universe multiverse 
-	deb-src http://au.archive.ubuntu.com/ubuntu/ xenial main restricted universe multiverse 
+	# deb http://au.archive.ubuntu.com/ubuntu/ xenial main restricted universe multiverse 
+	# deb-src http://au.archive.ubuntu.com/ubuntu/ xenial main restricted universe multiverse 
 	
 	###### Ubuntu Update Repos
-	deb http://au.archive.ubuntu.com/ubuntu/ xenial-security main restricted universe multiverse 
-	deb http://au.archive.ubuntu.com/ubuntu/ xenial-updates main restricted universe multiverse 
-	deb-src http://au.archive.ubuntu.com/ubuntu/ xenial-security main restricted universe multiverse 
-	deb-src http://au.archive.ubuntu.com/ubuntu/ xenial-updates main restricted universe multiverse 
+	# deb http://au.archive.ubuntu.com/ubuntu/ xenial-security main restricted universe multiverse 
+	# deb http://au.archive.ubuntu.com/ubuntu/ xenial-updates main restricted universe multiverse 
+	# deb-src http://au.archive.ubuntu.com/ubuntu/ xenial-security main restricted universe multiverse 
+	# deb-src http://au.archive.ubuntu.com/ubuntu/ xenial-updates main restricted universe multiverse 
 
 
 
@@ -111,7 +111,7 @@ base() {
 	# install tlp with recommends
 	apt-get install -y tlp tlp-rdw
 
-	# setup_sudo
+	# setup_download_temp
 	set_download_temp
 
 	apt-get install -y \
@@ -169,7 +169,7 @@ base() {
 
 	install_docker
 	install_scripts
-	install_syncthing
+	# install_syncthing
 
 	apt-get autoremove
 	apt-get autoclean
@@ -427,7 +427,7 @@ install_wifi() {
 
 # install stuff for i3 window manager
 install_wmapps() {
-	local pkgs="feh i3 i3lock i3status dmenu scrot xserver-xorg xserver-xorg-core xfonts-base xinit x11-xserver-utils x11-apps x11-session-utils x11-utils xinput xorg lightdm lightdm-gtk-greeter neovim"
+	local pkgs=""
 
 	apt-get install --reinstall -y $pkgs --no-install-recommends
 
@@ -464,7 +464,8 @@ get_dotfiles() {
 	cd "/home/$USERNAME/dotfiles"
 
 	# installs all the things
-	make
+	make bin
+	make dotfiles
 
 	# enable dbus for the user session
 	# systemctl --user enable dbus.socket
