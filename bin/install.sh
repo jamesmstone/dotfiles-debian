@@ -46,14 +46,14 @@ setup_sources() {
 	
 	cat <<-EOF > /etc/apt/sources.list
 	###### Ubuntu Main Repos
-	# deb http://au.archive.ubuntu.com/ubuntu/ xenial main restricted universe multiverse 
-	# deb-src http://au.archive.ubuntu.com/ubuntu/ xenial main restricted universe multiverse 
+	deb http://au.archive.ubuntu.com/ubuntu/ xenial main restricted universe multiverse 
+	deb-src http://au.archive.ubuntu.com/ubuntu/ xenial main restricted universe multiverse 
 	
 	###### Ubuntu Update Repos
-	# deb http://au.archive.ubuntu.com/ubuntu/ xenial-security main restricted universe multiverse 
-	# deb http://au.archive.ubuntu.com/ubuntu/ xenial-updates main restricted universe multiverse 
-	# deb-src http://au.archive.ubuntu.com/ubuntu/ xenial-security main restricted universe multiverse 
-	# deb-src http://au.archive.ubuntu.com/ubuntu/ xenial-updates main restricted universe multiverse 
+	deb http://au.archive.ubuntu.com/ubuntu/ xenial-security main restricted universe multiverse 
+	deb http://au.archive.ubuntu.com/ubuntu/ xenial-updates main restricted universe multiverse 
+	deb-src http://au.archive.ubuntu.com/ubuntu/ xenial-security main restricted universe multiverse 
+	deb-src http://au.archive.ubuntu.com/ubuntu/ xenial-updates main restricted universe multiverse 
 
 
 
