@@ -450,6 +450,8 @@ install_wmapps() {
 	echo "	Autohinter, Automatic, No."
 	echo "Run: "
 	echo "	dpkg-reconfigure fontconfig"
+	
+	dpkg --configure -a
 }
 
 get_dotfiles() {
