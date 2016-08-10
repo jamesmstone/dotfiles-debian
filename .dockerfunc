@@ -1115,10 +1115,13 @@ atom(){
 }
 
 idea(){
+del_stopped idea
+
 GOPATH="$(pwd)"
 PREF_DIR=${HOME}/dotfiles/IDEA
 
 docker run -tdi \
+	   --name idea \
            --net="host" \
            --privileged=true \
            -e DISPLAY=${DISPLAY} \
@@ -1128,6 +1131,22 @@ docker run -tdi \
            jamesmstone/docker-intellij
 }
 
+phpstorm(){
+del_stopped phpstorm
+
+GOPATH="$(pwd)"
+PREF_DIR=${HOME}/dotfiles/phpstorm
+
+docker run -tdi \
+	   --name phpstorm \
+           --net="host" \
+           --privileged=true \
+           -e DISPLAY=${DISPLAY} \
+           -v /tmp/.X11-unix:/tmp/.X11-unix \
+           -v ${PREF_DIR}:/home/developer/.IdeaIC2016.1 \
+           -v "${GOPATH}":/home/developer/go \
+           jamesmstone/docker-phpstorm
+}
 
 #
 # Javascript related
