@@ -924,6 +924,15 @@ termboy(){
 		--name termboy \
 		${DOCKER_REPO_PREFIX}/nes /games/${game}.rom
 }
+texmaker(){
+	docker run -it --rm \
+		-e USER=$USER -e USERID=$UID \
+		-v /tmp/.X11-unix:/tmp/.X11-unix \
+		-e DISPLAY=unix$DISPLAY \
+		--device /dev/dri \
+		-v "$(pwd)":/home/texmaker \
+		--name texmaker jgiovaresco/texmaker
+}
 tor(){
 	del_stopped tor
 
