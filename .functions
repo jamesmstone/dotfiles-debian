@@ -407,3 +407,9 @@ dell_monitor() {
 	xrandr --addmode  DP1 "3840x2160_30.00"
 	xrandr --output eDP1 --auto --primary --output DP1 --mode 3840x2160_30.00 --above eDP1 --rate 30
 }
+
+# `ds command` runs the command as a detached script
+# Source: http://stackoverflow.com/a/29681504/1432051
+ds(){
+	eval "$@" &>/dev/null &disown;
+}
