@@ -284,18 +284,6 @@ dcos(){
 		-w /root/apps \
 		${DOCKER_REPO_PREFIX}/dcos-cli "$@"
 }
-eclipse(){
-	del_stopped eclipse
-
-	docker run -ti --rm \
-	         -e DISPLAY=$DISPLAY \
-		 -v /tmp/.X11-unix:/tmp/.X11-unix \
-		 -v "$(pwd)/.eclipse":/home/developer \
-		 -v "$(pwd)":/workspace \
-		 --name eclipse \
-	    fgrehm/eclipse:v4.4.1
-
-}
 filezila(){
 	del_stopped filezilla
 
@@ -1160,7 +1148,18 @@ atom(){
          ${DOCKER_REPO_PREFIX}/atom \
 	 "$@"
 }
+eclipse(){
+	del_stopped eclipse
 
+	docker run -ti --rm \
+	         -e DISPLAY=$DISPLAY \
+		 -v /tmp/.X11-unix:/tmp/.X11-unix \
+		 -v "$(pwd)/.eclipse":/home/developer \
+		 -v "$(pwd)":/workspace \
+		 --name eclipse \
+	    fgrehm/eclipse:v4.4.1
+
+}
 idea(){
 del_stopped idea
 
