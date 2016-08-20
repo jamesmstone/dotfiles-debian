@@ -1174,7 +1174,7 @@ docker run -tdi \
            -v /tmp/.X11-unix:/tmp/.X11-unix \
            -v ${PREF_DIR}:/home/developer/.IdeaIC2016.1 \
            -v "${GOPATH}":/home/developer/go \
-           jamesmstone/docker-intellij
+           jamesmstone/idea-ultimate
 }
 
 phpstorm(){
