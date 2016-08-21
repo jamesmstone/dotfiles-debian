@@ -287,7 +287,9 @@ dcos(){
 		-w /root/apps \
 		${DOCKER_REPO_PREFIX}/dcos-cli "$@"
 }
+alias entr='docker run --rm -v "$(pwd)":/wd -w /wd jamesmstone/entr'
 filezila(){
+
 	del_stopped filezilla
 
 	 docker run \
