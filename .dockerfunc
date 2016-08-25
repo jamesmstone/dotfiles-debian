@@ -75,7 +75,12 @@ haskell(){
 ghc(){
 	docker run -it --rm -v"$(pwd)":/haskell -w/haskell haskell ghc "$@"
 }
-
+hlint(){
+	docker run -it --rm \
+        -v "$(pwd)":/hlin \
+        -w /hlint \
+        jamesmstone/hlint "$@"
+}
 python(){
 	docker run -it --rm --name python \
 		-v "$PWD":/usr/src/myapp \
