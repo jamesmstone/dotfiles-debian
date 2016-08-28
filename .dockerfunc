@@ -1189,7 +1189,17 @@ docker run -tdi \
            -v "${GOPATH}":/home/developer/go \
            jamesmstone/idea-ultimate
 }
-
+leksah(){
+	docker run --rm \
+		-v /etc/localtime:/etc/localtime:ro \
+		-v /tmp/.X11-unix:/tmp/.X11-unix \
+		-e DISPLAY=unix$DISPLAY \
+		-v "$(pwd)":/home/root \
+		-e GDK_SCALE \
+		-e GDK_DPI_SCALE \
+		--name leksah \
+		jamesmstone/leksah
+}
 phpstorm(){
 	del_stopped phpstorm
 
