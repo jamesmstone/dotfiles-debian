@@ -1191,12 +1191,12 @@ docker run -tdi \
 }
 
 phpstorm(){
-del_stopped phpstorm
+	del_stopped phpstorm
 
-GOPATH="$(pwd)"
-PREF_DIR=${HOME}/dotfiles/phpstorm
+	GOPATH="$(pwd)"
+	PREF_DIR=${HOME}/dotfiles/phpstorm
 
-docker run -tdi \
+	docker run -tdi \
 	   --name phpstorm \
            --net="host" \
            --privileged=true \
