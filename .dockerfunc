@@ -617,7 +617,7 @@ pandoc(){
 	local args=${@:1:${#@}-1}
 
 	docker run --rm \
-		-v ${lfile}:${rfile} \
+		-v "${lfile}":"${rfile}" \
 		-v /tmp:/tmp \
 		--name pandoc \
 		${DOCKER_REPO_PREFIX}/pandoc ${args} ${rfile}
