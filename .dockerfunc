@@ -1177,7 +1177,7 @@ idea(){
 del_stopped idea
 
 GOPATH="$(pwd)"
-PREF_DIR=${HOME}/dotfiles/IDEA
+PREF_DIR=${HOME}/.config/IDEA
 
 docker run -tdi \
 	   --name idea \
@@ -1185,7 +1185,7 @@ docker run -tdi \
            --privileged=true \
            -e DISPLAY=${DISPLAY} \
            -v /tmp/.X11-unix:/tmp/.X11-unix \
-           -v ${PREF_DIR}:/home/developer/.IdeaIC2016.1 \
+           -v ${PREF_DIR}:/home/developer/.IntelliJIdea2016.2\
            -v "${GOPATH}":/home/developer/go \
            jamesmstone/idea-ultimate
 }
