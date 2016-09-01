@@ -791,6 +791,9 @@ scudcloud(){
 	# exit current shell
 	exit 0
 }
+shellcheck(){
+	docker run -v"$(pwd)":/tmp/ -w/tmp/ chrisdaish/shellcheck "$@"
+}
 shorewall(){
 	del_stopped shorewall
 
