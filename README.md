@@ -1,6 +1,6 @@
 ## dotfiles
 
-[![Travis CI](https://travis-ci.org/jfrazelle/dotfiles.svg?branch=master)](https://travis-ci.org/jfrazelle/dotfiles)
+[![Build Status](https://travis-ci.org/jamesmstone/dotfiles.svg?branch=master)](https://travis-ci.org/jamesmstone/dotfiles)
 
 **To install:**
 
