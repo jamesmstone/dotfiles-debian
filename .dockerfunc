@@ -77,7 +77,7 @@ ghc(){
 }
 hlint(){
 	docker run -it --rm \
-        -v "$(pwd)":/hlin \
+        -v "$(pwd)":/hlint \
         -w /hlint \
         jamesmstone/hlint "$@"
 }
