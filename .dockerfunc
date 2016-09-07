@@ -1175,7 +1175,7 @@ eclipse(){
 		 -v "$(pwd)/.eclipse":/home/developer \
 		 -v "$(pwd)":/workspace \
 		 --name eclipse \
-	    fgrehm/eclipse:v4.4.1
+	    jamesmstone/graphics-eclipse
 
 }
 idea(){
