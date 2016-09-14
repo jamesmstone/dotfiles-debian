@@ -426,7 +426,7 @@ install_wifi() {
 
 # install stuff for i3 window manager
 install_wmapps() {
-	local pkgs="xinit feh i3 i3lock i3status scrot neovim"
+	local pkgs="xinit feh i3 i3lock i3status scrot neovim rofi"
 
 	apt-get install --reinstall -y $pkgs --no-install-recommends
 
