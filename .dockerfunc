@@ -865,6 +865,18 @@ ssh2john(){
 		--entrypoint ssh2john \
 		${DOCKER_REPO_PREFIX}/john $@
 }
+starUML(){
+	docker run -it --rm \
+		 -v "$(pwd)":/starUML \
+		 -w /starUML \
+		 -v /etc/group:/etc/group:ro \
+		 -v /etc/passwd:/etc/passwd:ro \
+    		 -v /etc/shadow:/etc/shadow:ro \
+		 -v /etc/sudoers.d:/etc/sudoers.d:ro \
+		 -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
+		 --name staruml \
+	 jamesmstone/staruml "$@"
+}
 steam(){
 	del_stopped steam
 	relies_on pulseaudio
