@@ -107,6 +107,10 @@ javadoc(){
 latex(){
 	docker run --rm -i --user="$(id -u):$(id -g)" -v "$(pwd)":/data blang/latex "$@"
 }
+swipl(){
+	docker run --rm -it -v "$(pwd)":/source nacyot/prolog-swi:apt swipl "$@"
+}
+
 #
 # Container Aliases
 #
@@ -1184,7 +1188,7 @@ eclipse(){
 	docker run -ti --rm \
 	         -e DISPLAY=$DISPLAY \
 		 -v /tmp/.X11-unix:/tmp/.X11-unix \
-		 -v "$(pwd)/.eclipse":/home/developer \
+		 -v "${HOME}/.eclipse":/home/developer \
 		 -v "$(pwd)":/workspace \
 		 --name eclipse \
 	    jamesmstone/graphics-eclipse
