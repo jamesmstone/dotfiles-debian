@@ -1271,6 +1271,15 @@ tns(){
         oreng/nativescript tns "$@"
 }
 
+weka(){
+    docker run --rm \
+	    -v "$(pwd)":"$(pwd)" \
+	    -w "$(pwd)" \
+	    -e DISPLAY=$DISPLAY \
+	    -v /tmp/.X11-unix:/tmp/.X11-unix \
+	    jamesmstone/weka "$@"
+}
+
 ws(){		# Webserver current dir
     local port=4321
     open "http://172.17.0.1:${port}" && docker run \
