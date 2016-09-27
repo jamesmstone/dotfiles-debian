@@ -416,6 +416,12 @@ john(){
 		-v ${file}:/root/$(basename ${file}) \
 		${DOCKER_REPO_PREFIX}/john $@
 }
+kubectl () {
+  docker run --rm -it --user $UID:$GID \
+    -v /var/run/secrets/kubernetes.io/serviceaccount:/var/run/secrets/kubernetes.io/serviceaccount:ro \
+    -w /code -v "$PWD":/code:ro \
+    wernight/kubectl "$@"
+}
 kernel_builder(){
 	docker run --rm -it \
 		-v /usr/src:/usr/src \
