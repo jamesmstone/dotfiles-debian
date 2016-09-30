@@ -295,7 +295,7 @@ consul(){
 dcos(){
 	docker run -it --rm \
 		-v $HOME/.dcos:/root/.dcos \
-		-v $(pwd):/root/apps \
+		-v "$(pwd)":/root/apps \
 		-w /root/apps \
 		${DOCKER_REPO_PREFIX}/dcos-cli "$@"
 }
