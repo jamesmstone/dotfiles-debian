@@ -299,6 +299,14 @@ dcos(){
 		-w /root/apps \
 		${DOCKER_REPO_PREFIX}/dcos-cli "$@"
 }
+evince(){
+	docker run --rm -it \
+		-v "$(pwd)":/wd \
+		-w /wd \
+		-v /tmp/.X11-unix:/tmp/.X11-unix \
+		-e DISPLAY=$DISPLAY \
+		${DOCKER_REPO_PREFIX}/evince evince "$@"
+}
 alias entr='docker run --rm -v "$(pwd)":/wd -w /wd jamesmstone/entr'
 filezila(){
 
