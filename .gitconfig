@@ -199,5 +199,3 @@
 	gpgsign = true
 [http]
 	cookiefile = ~/.gitcookies
-[gpg]
-	program = gpg2
