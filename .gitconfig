@@ -164,6 +164,7 @@
 [user]
 	name = James Stone
 	email = jamesmstone@users.noreply.github.com
+	signingkey = 10F754E8
 #[remote "origin"]
 	#fetch = +refs/pull/*/head:refs/remotes/origin/pull/*
 [github]
@@ -178,3 +179,5 @@
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	required = true
+[commit]
+	gpgsign = true
