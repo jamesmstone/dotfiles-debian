@@ -222,8 +222,13 @@ install_docker() {
 		-C /usr/local/bin --strip-components 1
 	chmod +x /usr/local/bin/docker*
 
+<<<<<<< HEAD
 	curl -sSL https://raw.githubusercontent.com/jamesmstone/dotfiles/master/etc/systemd/system/docker.service > /etc/systemd/system/docker.service
 	curl -sSL https://raw.githubusercontent.com/jamesmstone/dotfiles/master/etc/systemd/system/docker.socket > /etc/systemd/system/docker.socket
+=======
+	curl -sSL https://raw.githubusercontent.com/jessfraz/dotfiles/master/etc/systemd/system/docker.service > /etc/systemd/system/docker.service
+	curl -sSL https://raw.githubusercontent.com/jessfraz/dotfiles/master/etc/systemd/system/docker.socket > /etc/systemd/system/docker.socket
+>>>>>>> d2ea2ad87beca2b3d2ac8caf5e6d8bcf44dc783b
 
 	systemctl daemon-reload
 	systemctl enable docker
@@ -236,7 +241,11 @@ install_docker() {
 
 # install/update golang from source
 install_golang() {
+<<<<<<< HEAD
 	export GO_VERSION=1.6.2
+=======
+	export GO_VERSION=1.7.1
+>>>>>>> d2ea2ad87beca2b3d2ac8caf5e6d8bcf44dc783b
 	export GO_SRC=/usr/local/go
 
 	# if we are passing the version
@@ -266,6 +275,7 @@ install_golang() {
 	go get golang.org/x/tools/cmd/gorename
 	go get golang.org/x/tools/cmd/guru
 
+<<<<<<< HEAD
 	go get github.com/jfrazelle/apk-file
 	go get github.com/jfrazelle/bane
 	go get github.com/jfrazelle/battery
@@ -279,6 +289,23 @@ install_golang() {
 	go get github.com/jfrazelle/riddler
 	go get github.com/jfrazelle/udict
 	go get github.com/jfrazelle/weather
+=======
+	go get github.com/jessfraz/apk-file
+	go get github.com/jessfraz/bane
+	go get github.com/jessfraz/battery
+	go get github.com/jessfraz/cliaoke
+	go get github.com/jessfraz/ghb0t
+	go get github.com/jessfraz/magneto
+	go get github.com/jessfraz/netns
+	go get github.com/jessfraz/netscan
+	go get github.com/jessfraz/onion
+	go get github.com/jessfraz/pastebinit
+	go get github.com/jessfraz/pony
+	go get github.com/jessfraz/reg
+	go get github.com/jessfraz/riddler
+	go get github.com/jessfraz/udict
+	go get github.com/jessfraz/weather
+>>>>>>> d2ea2ad87beca2b3d2ac8caf5e6d8bcf44dc783b
 
 	go get github.com/axw/gocov/gocov
 	go get github.com/brianredbeard/gpget
@@ -295,9 +322,14 @@ install_golang() {
 	go get github.com/shurcooL/gostatus
 	go get github.com/shurcooL/markdownfmt
 	go get github.com/Soulou/curl-unix-socket
+<<<<<<< HEAD
 	
 	
 	aliases=( cloudflare/cfssl docker/docker kubernetes/kubernetes letsencrypt/boulder opencontainers/runc jfrazelle/binctr jfrazelle/contained.af )
+=======
+
+	aliases=( cloudflare/cfssl docker/docker letsencrypt/boulder opencontainers/runc jessfraz/binctr jessfraz/contained.af )
+>>>>>>> d2ea2ad87beca2b3d2ac8caf5e6d8bcf44dc783b
 	for project in "${aliases[@]}"; do
 		owner=$(dirname "$project")
 		repo=$(basename "$project")
@@ -321,11 +353,11 @@ install_golang() {
 		fi
 
 		# make sure we create the right git remotes
-		if [[ "$owner" != "jfrazelle" ]]; then
+		if [[ "$owner" != "jessfraz" ]]; then
 			(
 			cd "${GOPATH}/src/github.com/${project}"
 			git remote set-url --push origin no_push
-			git remote add jfrazelle "https://github.com/jfrazelle/${repo}.git"
+			git remote add jessfraz "https://github.com/jessfraz/${repo}.git"
 			)
 		fi
 
@@ -333,6 +365,7 @@ install_golang() {
 		ln -snvf "${GOPATH}/src/github.com/${project}" "${HOME}/${repo}"
 	done
 
+<<<<<<< HEAD
 	# create symlinks from personal projects to
 	# the ${HOME} directory
 	projectsdir=$GOPATH/src/github.com/jfrazelle
@@ -342,6 +375,15 @@ install_golang() {
 	ln -snvf "$dir" "${HOME}/${base}"
 done
 
+=======
+	# do special things for k8s GOPATH
+	mkdir -p "${GOPATH}/src/k8s.io"
+	git clone "https://github.com/kubernetes/kubernetes.git" "${GOPATH}/src/k8s.io/kubernetes"
+	cd "${GOPATH}/src/k8s.io/kubernetes"
+	git remote set-url --push origin no_push
+	git remote add jessfraz "https://github.com/jessfraz/kubernetes.git"
+	)
+>>>>>>> d2ea2ad87beca2b3d2ac8caf5e6d8bcf44dc783b
 }
 
 # install graphics drivers
@@ -381,16 +423,28 @@ install_scripts() {
 	curl -sSL https://raw.githubusercontent.com/tehmaze/lolcat/master/lolcat > /usr/local/bin/lolcat
 	chmod +x /usr/local/bin/lolcat
 
+<<<<<<< HEAD
+=======
+	# download syncthing binary
+	if [[ ! -f /usr/local/bin/syncthing ]]; then
+		curl -sSL https://misc.j3ss.co/binaries/syncthing > /usr/local/bin/syncthing
+		chmod +x /usr/local/bin/syncthing
+	fi
+
+	syncthing -upgrade
+
+>>>>>>> d2ea2ad87beca2b3d2ac8caf5e6d8bcf44dc783b
 	local scripts=( go-md2man have light )
 
 	for script in "${scripts[@]}"; do
-		curl -sSL "http://jesss.s3.amazonaws.com/binaries/$script" > /usr/local/bin/$script
+		curl -sSL "https://misc.j3ss.co/binaries/$script" > /usr/local/bin/$script
 		chmod +x /usr/local/bin/$script
 	done
 }
 
 # install syncthing
 install_syncthing() {
+<<<<<<< HEAD
 	check_is_sudo
 	# Add the release PGP keys:
 	curl -s https://syncthing.net/release-key.txt | sudo apt-key add -
@@ -401,6 +455,9 @@ install_syncthing() {
 	# Update and install syncthing:
 	apt-get update
 	apt-get install syncthing
+=======
+	curl -sSL https://raw.githubusercontent.com/jessfraz/dotfiles/master/etc/systemd/system/syncthing@.service > /etc/systemd/system/syncthing@.service
+>>>>>>> d2ea2ad87beca2b3d2ac8caf5e6d8bcf44dc783b
 
 	systemctl daemon-reload
 	systemctl enable "syncthing@${USERNAME}"
@@ -432,6 +489,7 @@ install_wmapps() {
 
 	# update clickpad settings
 	mkdir -p /etc/X11/xorg.conf.d/
+<<<<<<< HEAD
 	curl -sSL https://raw.githubusercontent.com/jamesmstone/dotfiles/master/etc/X11/xorg.conf.d/50-synaptics-clickpad.conf > /etc/X11/xorg.conf.d/50-synaptics-clickpad.conf
 
 	# add xorg conf
@@ -442,6 +500,18 @@ install_wmapps() {
 
 	# pretty fonts
 	curl -sSL https://raw.githubusercontent.com/jamesmstone/dotfiles/master/etc/fonts/local.conf > /etc/fonts/local.conf
+=======
+	curl -sSL https://raw.githubusercontent.com/jessfraz/dotfiles/master/etc/X11/xorg.conf.d/50-synaptics-clickpad.conf > /etc/X11/xorg.conf.d/50-synaptics-clickpad.conf
+
+	# add xorg conf
+	curl -sSL https://raw.githubusercontent.com/jessfraz/dotfiles/master/etc/X11/xorg.conf > /etc/X11/xorg.conf
+
+	# get correct sound cards on boot
+	curl -sSL https://raw.githubusercontent.com/jessfraz/dotfiles/master/etc/modprobe.d/intel.conf > /etc/modprobe.d/intel.conf
+
+	# pretty fonts
+	curl -sSL https://raw.githubusercontent.com/jessfraz/dotfiles/master/etc/fonts/local.conf > /etc/fonts/local.conf
+>>>>>>> d2ea2ad87beca2b3d2ac8caf5e6d8bcf44dc783b
 
 	echo "Fonts file setup successfully now run:"
 	echo "	dpkg-reconfigure fontconfig-config"
@@ -456,11 +526,16 @@ install_wmapps() {
 get_dotfiles() {
 	# create subshell
 	(
-	cd "/home/$USERNAME"
+	cd "$HOME"
 
 	# install dotfiles from repo
+<<<<<<< HEAD
 	git clone git@github.com:jamesmstone/dotfiles.git "/home/$USERNAME/dotfiles"
 	cd "/home/$USERNAME/dotfiles"
+=======
+	git clone git@github.com:jessfraz/dotfiles.git "${HOME}/dotfiles"
+	cd "${HOME}/dotfiles"
+>>>>>>> d2ea2ad87beca2b3d2ac8caf5e6d8bcf44dc783b
 
 	# installs all the things
 	make bin
@@ -469,9 +544,10 @@ get_dotfiles() {
 	# enable dbus for the user session
 	# systemctl --user enable dbus.socket
 
-	sudo systemctl enable i3lock
+	sudo systemctl enable i3lock@${USERNAME}
 	sudo systemctl enable suspend-sedation.service
 
+<<<<<<< HEAD
 	cd "/home/$USERNAME"
 
 	# install .vim files
@@ -479,6 +555,26 @@ get_dotfiles() {
 	ln -snf "/home/$USERNAME/.vim/vimrc" "/home/$USERNAME/.vimrc"
 	sudo ln -snf "/home/$USERNAME/.vim" /root/.vim
 	sudo ln -snf "/home/$USERNAME/.vimrc" /root/.vimrc
+=======
+	cd "$HOME"
+	mkdir -p ~/Pictures
+	mkdir -p ~/Torrents
+	)
+
+	install_vim;
+}
+
+install_vim() {
+	# create subshell
+	(
+	cd "$HOME"
+
+	# install .vim files
+	git clone --recursive git@github.com:jessfraz/.vim.git "$HOME/.vim"
+	ln -snf "$HOME/.vim/vimrc" "$HOME/.vimrc"
+	sudo ln -snf "$HOME/.vim" /root/.vim
+	sudo ln -snf "$HOME/.vimrc" /root/.vimrc
+>>>>>>> d2ea2ad87beca2b3d2ac8caf5e6d8bcf44dc783b
 
 	# alias vim dotfiles to neovim
 	mkdir -p ${XDG_CONFIG_HOME:=$HOME/.config}
@@ -497,8 +593,15 @@ get_dotfiles() {
 	sudo update-alternatives --install /usr/bin/editor editor /usr/bin/nvim 60
 	sudo update-alternatives --config editor
 
-	mkdir -p ~/Pictures
-	mkdir -p ~/Torrents
+	# install things needed for deoplete for vim
+	sudo apt-get update
+	sudo apt-get install -y \
+		python3-pip \
+		--no-install-recommends
+	pip3 install -U \
+		setuptools \
+		wheel \
+		neovim
 	)
 }
 
