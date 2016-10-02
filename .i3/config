@@ -112,13 +112,8 @@ bindsym $mod+a focus parent
 #bindsym $mod+d focus child
 
 # switch to workspace
-<<<<<<< HEAD
 bindsym $mod+1 workspace 1: spotify; exec relies_on spotify
 bindsym $mod+2 workspace 2: www; exec relies_on chrome
-=======
-bindsym $mod+1 workspace 1
-bindsym $mod+2 workspace 2
->>>>>>> d2ea2ad87beca2b3d2ac8caf5e6d8bcf44dc783b
 bindsym $mod+3 workspace 3
 bindsym $mod+4 workspace 4
 bindsym $mod+5 workspace 5
