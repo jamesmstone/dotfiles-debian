@@ -16,7 +16,12 @@ dotfiles:
 		f=$$(basename $$file); \
 		ln -sfn $$file $(HOME)/$$f; \
 	done; \
+<<<<<<< HEAD
 #	ln -sfn $(CURDIR)/.gnupg/gpg.conf $(HOME)/.gnupg/gpg.conf;
+=======
+	ln -sfn $(CURDIR)/.gnupg/gpg.conf $(HOME)/.gnupg/gpg.conf;
+	ln -sfn $(CURDIR)/.gnupg/gpg-agent.conf $(HOME)/.gnupg/gpg-agent.conf;
+>>>>>>> d2ea2ad87beca2b3d2ac8caf5e6d8bcf44dc783b
 	ln -fn $(CURDIR)/gitignore $(HOME)/.gitignore;
 
 etc:
