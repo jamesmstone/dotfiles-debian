@@ -1211,17 +1211,15 @@ eclipse(){
 idea(){
 del_stopped idea
 
-GOPATH="$(pwd)"
 PREF_DIR=${HOME}/.config/IDEA
-
-docker run -tdi \
+docker run --rm -it \
 	   --name idea \
            --net="host" \
            --privileged=true \
            -e DISPLAY=${DISPLAY} \
            -v /tmp/.X11-unix:/tmp/.X11-unix \
-           -v ${PREF_DIR}:/home/developer/.IntelliJIdea2016.2\
-           -v "${GOPATH}":/home/developer/go \
+           -v ${PREF_DIR}:/config \
+           -v "$(dirname "$(pwd)")":/home/root/ \
            jamesmstone/idea-ultimate
 }
 leksah(){
