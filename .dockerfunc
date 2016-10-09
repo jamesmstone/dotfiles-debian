@@ -299,6 +299,12 @@ dcos(){
 		-w /root/apps \
 		${DOCKER_REPO_PREFIX}/dcos-cli "$@"
 }
+dockfmt(){
+	docker run -it --rm \
+		-v "$(pwd)" \
+		-w "$(pwd)" \
+		${DOCKER_REPO_PREFIX}/dockfmt "$@"
+}
 evince(){
 	docker run --rm -it \
 		-v "$(pwd)":/wd \
