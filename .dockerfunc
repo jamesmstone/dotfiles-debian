@@ -11,6 +11,10 @@ dcleanup(){
 	docker rm -v $(docker ps --filter status=exited -q 2>/dev/null) 2>/dev/null
 	docker rmi $(docker images --filter dangling=true -q 2>/dev/null) 2>/dev/null
 }
+dupdate(){
+	# from http://stackoverflow.com/a/32310478/1432051
+	docker images | awk '/^REPOSITORY|\<none\>/ {next} {print $1}' | xargs -n 1 docker pull
+}
 del_stopped(){
 	local name=$1
 	local state=$(docker inspect --format "{{.State.Running}}" $name 2>/dev/null)
@@ -669,7 +673,7 @@ pms(){
 		--name pms \
 		${DOCKER_REPO_PREFIX}/pms "$@"
 }
-alias polymer="docker run -it --name polymer-project --rm -p 8080:8080 -v $(pwd):/home/polymer/app jefferyb/polymer-cli polymer "
+alias polymer="docker run -it --rm -p 8080:8080 -v "$(pwd)":/home/polymer/app jefferyb/polymer-cli polymer "
 pond(){
 	del_stopped pond
 	relies_on torproxy
