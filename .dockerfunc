@@ -669,7 +669,7 @@ pms(){
 		--name pms \
 		${DOCKER_REPO_PREFIX}/pms "$@"
 }
-alias polymer="docker run --name polymer-project --rm -p 8080:8080 -v $(pwd):/home/polymer/app jefferyb/polymer-cli polymer "
+alias polymer="docker run -it --name polymer-project --rm -p 8080:8080 -v $(pwd):/home/polymer/app jefferyb/polymer-cli polymer "
 pond(){
 	del_stopped pond
 	relies_on torproxy
