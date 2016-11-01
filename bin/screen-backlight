@@ -57,7 +57,7 @@ case $1 in
 		while [ "$TEMP_VALUE" -lt "$MAX" ]; do
 			TEMP_VALUE=$((TEMP_VALUE + 1))
 			if [ "$TEMP_VALUE" -gt "$MAX" ]; then TEMP_VALUE=$MAX; fi
-			echo "$TEMP_VALUE" > $BLFILE
+			echo "$TEMP_VALUE" >$BLFILE
 		done
 		;;
 	off)
@@ -65,7 +65,7 @@ case $1 in
 		while [ "$TEMP_VALUE" -gt "0" ]; do
 			TEMP_VALUE=$((TEMP_VALUE - 1))
 			if [ "$TEMP_VALUE" -lt "0" ]; then TEMP_VALUE=0; fi
-			echo "$TEMP_VALUE" > $BLFILE
+			echo "$TEMP_VALUE" >$BLFILE
 		done
 		;;
 	*)
@@ -74,5 +74,5 @@ case $1 in
 esac
 
 if [ "$SET_VALUE" -eq "1" ]; then
-	echo "$TOTAL" > $BLFILE
+	echo "$TOTAL" >$BLFILE
 fi

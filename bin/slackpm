@@ -15,7 +15,7 @@ set -e
 set -o pipefail
 
 # Print a usage message and exit.
-usage(){
+usage() {
 	local name=$(basename "$0")
 
 	cat >&2 <<-EOF
@@ -31,10 +31,10 @@ usage(){
 
 # Print usage with --help or -h
 if [ "$#" -lt 2 ]; then
-	usage;
+	usage
 fi
 
-nick_to_userid(){
+nick_to_userid() {
 	local nick=$1
 
 	# get the users
@@ -60,7 +60,7 @@ nick_to_userid(){
 	echo "  Status:  ${presence}"
 }
 
-user_to_channelid(){
+user_to_channelid() {
 	local user=$1
 
 	# get the im channels
@@ -80,7 +80,7 @@ user_to_channelid(){
 	channelid=$(echo "$channel" | jq --raw-output '.id')
 }
 
-send_message(){
+send_message() {
 	local nick=$1
 	local message=${*:2}
 

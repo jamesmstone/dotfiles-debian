@@ -16,7 +16,7 @@
 #set -e
 set -o pipefail
 
-browser_exec(){
+browser_exec() {
 	# check if chrome container is running
 	chrome_state=$(docker inspect --format "{{.State.Running}}" chrome 2>/dev/null)
 	if [[ "$chrome_state" == "true" ]]; then

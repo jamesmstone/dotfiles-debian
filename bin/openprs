@@ -25,14 +25,14 @@ DEFAULT_PER_PAGE=100
 LAST_PAGE=1
 
 # get the last page from the headers
-get_last_page(){
+get_last_page() {
 	header=${1%%" rel=\"last\""*}
 	header=${header#*"rel=\"next\""}
 	header=${header%%">;"*}
 	LAST_PAGE=$(echo ${header#*"&page="} | bc 2>/dev/null)
 }
 
-get_pulls(){
+get_pulls() {
 	local repo=$1
 	local page=$2
 
@@ -75,7 +75,7 @@ get_pulls(){
 			cat <<-EOF
 
 			${repo}#${number}: ${title}
-			`date  -d"${created_at}" +'%A, %B %d, %Y at %r'`
+			$(date -d"${created_at}" +'%A, %B %d, %Y at %r')
 			${html_url}
 
 			@${author}: ${body}
@@ -88,8 +88,7 @@ get_pulls(){
 	fi
 }
 
-
-main(){
+main() {
 	# send the request
 	local response=$(curl -sSL -H "${AUTH_HEADER}" -H "${API_HEADER}" "${URI}/user/repos?per_page=${DEFAULT_PER_PAGE}")
 	local repos=$(echo $response | jq --raw-output '.[].full_name | tostring')
@@ -100,7 +99,7 @@ main(){
 		get_pulls "${repo}" "${page}"
 
 		if [ ! -z "$LAST_PAGE" ] && [ "$LAST_PAGE" -ge "$page" ]; then
-			for page in  $(seq $((page + 1)) 1 ${LAST_PAGE}); do
+			for page in $(seq $((page + 1)) 1 ${LAST_PAGE}); do
 				echo "On page ${page} of ${LAST_PAGE}"
 				get_pulls "${repo}" "${page}"
 			done

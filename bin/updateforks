@@ -22,14 +22,13 @@ API_VERSION=v3
 
 DEFAULT_PER_PAGE=100
 
-ignore_repos=( mac-dev-setup )
+ignore_repos=(mac-dev-setup)
 
-update_fork(){
+update_fork() {
 	local forked_repo=$1
 	local upstream_repo=$2
 	local primary_branch=$3
 	local tmpdir=$(mktemp -d)
-
 
 	if [[ " ${ignore_repos[@]} " =~ " ${repo} " ]]; then
 		return
@@ -40,25 +39,24 @@ update_fork(){
 	echo
 
 	(
-	set -x
-	git clone --depth 1 "git@github.com:${forked_repo}.git" "$tmpdir"
-	cd "$tmpdir"
-	git remote add upstream "https://github.com/${upstream_repo}.git"
-	# just in case
-	git remote set-url --push upstream no_push
-	# fetch upstream master
-	git fetch upstream "${primary_branch}"
-	git reset --hard "upstream/${primary_branch}"
-	git push origin "${primary_branch}"
-	echo "Updated local ${forked_repo} to origin/master"
+		set -x
+		git clone --depth 1 "git@github.com:${forked_repo}.git" "$tmpdir"
+		cd "$tmpdir"
+		git remote add upstream "https://github.com/${upstream_repo}.git"
+		# just in case
+		git remote set-url --push upstream no_push
+		# fetch upstream master
+		git fetch upstream "${primary_branch}"
+		git reset --hard "upstream/${primary_branch}"
+		git push origin "${primary_branch}"
+		echo "Updated local ${forked_repo} to origin/master"
 	)
 
 	# cleanup
 	rm -rf "$tmpdir"
 }
 
-
-main(){
+main() {
 	# send the request
 	local response=$(curl -sSL "${URI}/users/${GITHUB_USERNAME}/repos?per_page=${DEFAULT_PER_PAGE}")
 	local repos=$(echo $response | jq --raw-output '.[] | {fullname:.full_name,repo:.name,fork:.fork,id:.id} | @base64')

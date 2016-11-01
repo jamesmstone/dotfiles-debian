@@ -305,7 +305,7 @@ dcos(){
 }
 dockfmt(){
 	docker run -it --rm \
-		-v "$(pwd)" \
+		-v "$(pwd)":"$(pwd)" \
 		-w "$(pwd)" \
 		${DOCKER_REPO_PREFIX}/dockfmt "$@"
 }
@@ -1063,8 +1063,8 @@ transmission(){
 alias travis='docker run --rm -it -v "$(pwd)":/repo -v ~/.travis:/travis andredumas/travis-ci-cli'
 trello(){
 	docker run --rm \
-		-e TRELLO_DEVELOPER_PUBLIC_KEY= $TRELLO_DEVELOPER_PUBLIC_KEY \
-		-e TRELLO_MEMBER_TOKEN=$TRELLO_MEMBER_TOKEN \
+		-e TRELLO_DEVELOPER_PUBLIC_KEY="$TRELLO_DEVELOPER_PUBLIC_KEY" \
+		-e TRELLO_MEMBER_TOKEN="$TRELLO_MEMBER_TOKEN" \
 		jamesmstone/trello "$@"
 }
 virsh(){

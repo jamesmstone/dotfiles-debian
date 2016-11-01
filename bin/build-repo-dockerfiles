@@ -12,7 +12,7 @@
 set -e
 set -o pipefail
 
-build_repo_dockerfile(){
+build_repo_dockerfile() {
 	local orig=$1
 	local user=${orig%/*}
 	local repo=${orig#*/}
@@ -35,10 +35,10 @@ build_repo_dockerfile(){
 	echo
 
 	(
-	set -x
-	git clone --depth 1 "https://github.com/${user}/${repo}.git" "$tmpdir"
-	cd "$tmpdir"
-	docker build --rm --force-rm -t ${image} .
+		set -x
+		git clone --depth 1 "https://github.com/${user}/${repo}.git" "$tmpdir"
+		cd "$tmpdir"
+		docker build --rm --force-rm -t ${image} .
 	)
 
 	echo "                       ---                                   "
@@ -49,7 +49,7 @@ build_repo_dockerfile(){
 	until [ $n -ge 5 ]; do
 		docker push --disable-content-trust=false ${image} && break
 		echo "Try #$n failed... sleeping for 15 seconds"
-		n=$[$n+1]
+		n=$(($n + 1))
 		sleep 15
 	done
 
@@ -61,9 +61,9 @@ build_repo_dockerfile(){
 		echo
 
 		(
-		set -x
-		cd "$tmpdir"
-		docker build --rm --force-rm -t ${image} server
+			set -x
+			cd "$tmpdir"
+			docker build --rm --force-rm -t ${image} server
 		)
 
 		echo "                       ---                                   "
@@ -76,42 +76,41 @@ build_repo_dockerfile(){
 		until [ $n -ge 5 ]; do
 			docker push --disable-content-trust=false ${image} && break
 			echo "Try #$n failed... sleeping for 15 seconds"
-			n=$[$n+1]
+			n=$(($n + 1))
 			sleep 15
 		done
 	fi
-
 
 	# cleanup
 	rm -rf "$tmpdir"
 }
 
 repos=(
-jessfraz/apk-file
-jessfraz/audit
-jessfraz/bane
-jessfraz/battery
-jessfraz/cliaoke
-jessfraz/ghb0t
-jessfraz/magneto
-jessfraz/netns
-jessfraz/netscan
-jessfraz/onion
-jessfraz/pastebinit
-jessfraz/pony
-jessfraz/riddler
-jessfraz/s3server
-jessfraz/snippetlib
-jessfraz/udict
-jessfraz/upmail
-jessfraz/vanity
-jessfraz/weather
-kylemanna/docker-openvpn
+	jessfraz/apk-file
+	jessfraz/audit
+	jessfraz/bane
+	jessfraz/battery
+	jessfraz/cliaoke
+	jessfraz/ghb0t
+	jessfraz/magneto
+	jessfraz/netns
+	jessfraz/netscan
+	jessfraz/onion
+	jessfraz/pastebinit
+	jessfraz/pony
+	jessfraz/riddler
+	jessfraz/s3server
+	jessfraz/snippetlib
+	jessfraz/udict
+	jessfraz/upmail
+	jessfraz/vanity
+	jessfraz/weather
+	kylemanna/docker-openvpn
 )
 
 : ${REGISTRY_PREFIX:=r.j3ss.co}
 
-main(){
+main() {
 	for r in ${repos[@]}; do
 		build_repo_dockerfile "$r"
 	done

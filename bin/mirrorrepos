@@ -26,14 +26,13 @@ API_VERSION=v3
 
 DEFAULT_PER_PAGE=100
 
-override_repos=( docker-freeipa mac-dev-setup mbox universe )
+override_repos=(docker-freeipa mac-dev-setup mbox universe)
 
-mirror_repo(){
+mirror_repo() {
 	local orig=$1
 	local user=${orig%/*}
 	local repo=${orig#*/}
 	local tmpdir=$(mktemp -d)
-
 
 	if [[ "$GITHUB_USERNAME" == "$user" ]]; then
 		dest="$repo"
@@ -50,18 +49,17 @@ mirror_repo(){
 	echo
 
 	(
-	set -x
-	git clone --mirror "git@github.com:${GITHUB_USERNAME}/${repo}.git" "$tmpdir"
-	cd "$tmpdir"
-	git push --mirror "${REMOTE_URL}:${dest}.git"
+		set -x
+		git clone --mirror "git@github.com:${GITHUB_USERNAME}/${repo}.git" "$tmpdir"
+		cd "$tmpdir"
+		git push --mirror "${REMOTE_URL}:${dest}.git"
 	)
 
 	# cleanup
 	rm -rf "$tmpdir"
 }
 
-
-main(){
+main() {
 	# send the request
 	local response=$(curl -sSL "${URI}/users/${GITHUB_USERNAME}/repos?per_page=${DEFAULT_PER_PAGE}&type=public")
 	local repos=$(echo $response | jq --raw-output '.[] | {fullname:.full_name,repo:.name,fork:.fork,id:.id} | @base64')

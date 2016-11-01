@@ -15,7 +15,7 @@ set -e
 set -o pipefail
 
 # Print a usage message and exit.
-usage(){
+usage() {
 	local name=$(basename "$0")
 
 	cat >&2 <<-EOF
@@ -28,10 +28,10 @@ usage(){
 
 # Print usage with --help or -h
 if [ "$#" -lt 2 ]; then
-	usage;
+	usage
 fi
 
-main(){
+main() {
 	local name=$1
 	local iso=$2
 	local guest_dir="/var/lib/libvirt/images/${name}"
@@ -42,8 +42,8 @@ main(){
 	fi
 
 	if [[ -d "$guest_dir" ]]; then
-		>&2 echo "Guest directory: $guest_dir already exists."
-		>&2 echo "Exiting..."
+		echo >&2 "Guest directory: $guest_dir already exists."
+		echo >&2 "Exiting..."
 	fi
 
 	# create a fully-allocated (non-sparse) raw file

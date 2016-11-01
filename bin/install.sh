@@ -15,7 +15,7 @@ check_is_sudo() {
 		exit
 	fi
 }
-generate_ssh(){
+generate_ssh() {
 	ssh-keygen -t rsa -b 4096 -C "jamesmstone@users.noreply.github.com"
 	eval "$(ssh-agent -s)"
 	ssh-add ~/.ssh/id_rsa
@@ -37,14 +37,14 @@ setup_sources() {
 	apt-get install -y \
 		apt-transport-https \
 		--no-install-recommends
-		
+
 	add-apt-repository universe -y
 	add-apt-repository main -y
 	add-apt-repository universe -y
 	add-apt-repository restricted -y
 	add-apt-repository multiverse -y
-	
-	cat <<-EOF > /etc/apt/sources.list
+
+	cat <<-EOF >/etc/apt/sources.list
 	###### Ubuntu Main Repos
 	deb http://au.archive.ubuntu.com/ubuntu/ xenial main restricted universe multiverse 
 	deb-src http://au.archive.ubuntu.com/ubuntu/ xenial main restricted universe multiverse 
@@ -70,9 +70,9 @@ setup_sources() {
 	# tlp: Advanced Linux Power Management
 	# http://linrunner.de/en/tlp/docs/tlp-linux-advanced-power-management.html
 	add-apt-repository ppa:linrunner/tlp -y
-	
+
 	# add docker apt repo
-	cat <<-EOF > /etc/apt/sources.list.d/docker.list
+	cat <<-EOF >/etc/apt/sources.list.d/docker.list
 	deb https://apt.dockerproject.org/repo debian-stretch main
 	deb https://apt.dockerproject.org/repo debian-stretch testing
 	deb https://apt.dockerproject.org/repo debian-stretch experimental
@@ -89,11 +89,10 @@ setup_sources() {
 
 	# turn off translations, speed up apt-get update
 	mkdir -p /etc/apt/apt.conf.d
-	echo 'Acquire::Languages "none";' > /etc/apt/apt.conf.d/99translations
-	
-	
+	echo 'Acquire::Languages "none";' >/etc/apt/apt.conf.d/99translations
+
 	# i3
-	echo "deb http://debian.sur5r.net/i3/ $(lsb_release -c -s) universe" >> /etc/apt/sources.list
+	echo "deb http://debian.sur5r.net/i3/ $(lsb_release -c -s) universe" >>/etc/apt/sources.list
 	apt-get update
 	apt-get --allow-unauthenticated install sur5r-keyring
 	apt-get update
@@ -104,8 +103,7 @@ setup_sources() {
 base() {
 	apt-get update
 	apt-get -y upgrade
-	
-	
+
 	# install tlp with recommends
 	apt-get install -y tlp tlp-rdw
 
@@ -164,7 +162,7 @@ base() {
 		xz-utils \
 		zip \
 		--no-install-recommends
-		
+
 	system_76_drivers
 	install_docker
 	install_scripts
@@ -192,22 +190,21 @@ setup_sudo() {
 	gpasswd -a "$USERNAME" systemd-network
 
 	# add go path to secure path
-	{ \
-		echo -e 'Defaults	secure_path="/usr/local/go/bin:/home/james/.go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"'; \
-		echo -e 'Defaults	env_keep += "ftp_proxy http_proxy https_proxy no_proxy GOPATH EDITOR"'; \
-		echo -e "${USERNAME} ALL=(ALL) NOPASSWD:ALL"; \
-		echo -e "${USERNAME} ALL=NOPASSWD: /sbin/ifconfig, /sbin/ifup, /sbin/ifdown, /sbin/ifquery"; \
-	} >> /etc/sudoers
+	{
+		echo -e 'Defaults	secure_path="/usr/local/go/bin:/home/james/.go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"'
+		echo -e 'Defaults	env_keep += "ftp_proxy http_proxy https_proxy no_proxy GOPATH EDITOR"'
+		echo -e "${USERNAME} ALL=(ALL) NOPASSWD:ALL"
+		echo -e "${USERNAME} ALL=NOPASSWD: /sbin/ifconfig, /sbin/ifup, /sbin/ifdown, /sbin/ifquery"
+	} >>/etc/sudoers
 
-	
 }
 
 set_download_temp() {
-# setup downloads folder as tmpfs
+	# setup downloads folder as tmpfs
 	# that way things are removed on reboot
 	# i like things clean but you may not want this
 	mkdir -p "/home/$USERNAME/Downloads"
-	echo -e "\n# tmpfs for downloads\ntmpfs\t/home/${USERNAME}/Downloads\ttmpfs\tnodev,nosuid,size=2G\t0\t0" >> /etc/fstab
+	echo -e "\n# tmpfs for downloads\ntmpfs\t/home/${USERNAME}/Downloads\ttmpfs\tnodev,nosuid,size=2G\t0\t0" >>/etc/fstab
 }
 
 # installs docker master
@@ -217,13 +214,12 @@ install_docker() {
 	sudo groupadd docker
 	sudo gpasswd -a "$USERNAME" docker
 
-
 	curl -sSL https://get.docker.com/builds/Linux/x86_64/docker-latest.tgz | tar -xvz \
 		-C /usr/local/bin --strip-components 1
 	chmod +x /usr/local/bin/docker*
 
-	curl -sSL https://raw.githubusercontent.com/jamesmstone/dotfiles/master/etc/systemd/system/docker.service > /etc/systemd/system/docker.service
-	curl -sSL https://raw.githubusercontent.com/jamesmstone/dotfiles/master/etc/systemd/system/docker.socket > /etc/systemd/system/docker.socket
+	curl -sSL https://raw.githubusercontent.com/jamesmstone/dotfiles/master/etc/systemd/system/docker.service >/etc/systemd/system/docker.service
+	curl -sSL https://raw.githubusercontent.com/jamesmstone/dotfiles/master/etc/systemd/system/docker.socket >/etc/systemd/system/docker.socket
 
 	systemctl daemon-reload
 	systemctl enable docker
@@ -252,11 +248,11 @@ install_golang() {
 
 	# subshell because we `cd`
 	(
-	curl -sSL "https://storage.googleapis.com/golang/go${GO_VERSION}.linux-amd64.tar.gz" | sudo tar -v -C /usr/local -xz
+		curl -sSL "https://storage.googleapis.com/golang/go${GO_VERSION}.linux-amd64.tar.gz" | sudo tar -v -C /usr/local -xz
 	)
 
 	# get commandline tools
-	
+
 	set -x
 	set +e
 	go get github.com/golang/lint/golint
@@ -298,7 +294,7 @@ install_golang() {
 	go get github.com/shurcooL/markdownfmt
 	go get github.com/Soulou/curl-unix-socket
 
-	aliases=( cloudflare/cfssl docker/docker letsencrypt/boulder opencontainers/runc jessfraz/binctr jessfraz/contained.af )
+	aliases=(cloudflare/cfssl docker/docker letsencrypt/boulder opencontainers/runc jessfraz/binctr jessfraz/contained.af)
 
 	for project in "${aliases[@]}"; do
 		owner=$(dirname "$project")
@@ -311,12 +307,12 @@ install_golang() {
 
 		if [[ ! -d "${GOPATH}/src/github.com/${project}" ]]; then
 			(
-			# clone the repo
-			cd "${GOPATH}/src/github.com/${owner}"
-			git clone "https://github.com/${project}.git"
-			# fix the remote path, since our gitconfig will make it git@
-			cd "${GOPATH}/src/github.com/${project}"
-			git remote set-url origin "https://github.com/${project}.git"
+				# clone the repo
+				cd "${GOPATH}/src/github.com/${owner}"
+				git clone "https://github.com/${project}.git"
+				# fix the remote path, since our gitconfig will make it git@
+				cd "${GOPATH}/src/github.com/${project}"
+				git remote set-url origin "https://github.com/${project}.git"
 			)
 		else
 			echo "found ${project} already in gopath"
@@ -325,9 +321,9 @@ install_golang() {
 		# make sure we create the right git remotes
 		if [[ "$owner" != "jessfraz" ]]; then
 			(
-			cd "${GOPATH}/src/github.com/${project}"
-			git remote set-url --push origin no_push
-			git remote add jessfraz "https://github.com/jessfraz/${repo}.git"
+				cd "${GOPATH}/src/github.com/${project}"
+				git remote set-url --push origin no_push
+				git remote add jessfraz "https://github.com/jessfraz/${repo}.git"
 			)
 		fi
 
@@ -335,15 +331,14 @@ install_golang() {
 		ln -snvf "${GOPATH}/src/github.com/${project}" "${HOME}/${repo}"
 	done
 
-
 	# create symlinks from personal projects to
 	# the ${HOME} directory
 	projectsdir=$GOPATH/src/github.com/jfrazelle
 	base=$(basename "$projectsdir")
 	find "$projectsdir" -maxdepth 1 -not -name "$base" -type d -print0 | while read -d '' -r dir; do
-	base=$(basename "$dir")
-	ln -snvf "$dir" "${HOME}/${base}"
-done
+		base=$(basename "$dir")
+		ln -snvf "$dir" "${HOME}/${base}"
+	done
 
 }
 
@@ -371,31 +366,31 @@ install_scripts() {
 	curl -sSL https://asciinema.org/install | sh
 
 	# install speedtest
-	curl -sSL https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest_cli.py > /usr/local/bin/speedtest
+	curl -sSL https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest_cli.py >/usr/local/bin/speedtest
 	chmod +x /usr/local/bin/speedtest
 
 	# install icdiff
-	curl -sSL https://raw.githubusercontent.com/jeffkaufman/icdiff/master/icdiff > /usr/local/bin/icdiff
-	curl -sSL https://raw.githubusercontent.com/jeffkaufman/icdiff/master/git-icdiff > /usr/local/bin/git-icdiff
+	curl -sSL https://raw.githubusercontent.com/jeffkaufman/icdiff/master/icdiff >/usr/local/bin/icdiff
+	curl -sSL https://raw.githubusercontent.com/jeffkaufman/icdiff/master/git-icdiff >/usr/local/bin/git-icdiff
 	chmod +x /usr/local/bin/icdiff
 	chmod +x /usr/local/bin/git-icdiff
 
 	# install lolcat
-	curl -sSL https://raw.githubusercontent.com/tehmaze/lolcat/master/lolcat > /usr/local/bin/lolcat
+	curl -sSL https://raw.githubusercontent.com/tehmaze/lolcat/master/lolcat >/usr/local/bin/lolcat
 	chmod +x /usr/local/bin/lolcat
 
 	# download syncthing binary
 	if [[ ! -f /usr/local/bin/syncthing ]]; then
-		curl -sSL https://misc.j3ss.co/binaries/syncthing > /usr/local/bin/syncthing
+		curl -sSL https://misc.j3ss.co/binaries/syncthing >/usr/local/bin/syncthing
 		chmod +x /usr/local/bin/syncthing
 	fi
 
 	syncthing -upgrade
 
-	local scripts=( go-md2man have light )
+	local scripts=(go-md2man have light)
 
 	for script in "${scripts[@]}"; do
-		curl -sSL "https://misc.j3ss.co/binaries/$script" > /usr/local/bin/$script
+		curl -sSL "https://misc.j3ss.co/binaries/$script" >/usr/local/bin/$script
 		chmod +x /usr/local/bin/$script
 	done
 }
@@ -413,7 +408,7 @@ install_syncthing() {
 	apt-get update
 	apt-get install syncthing
 
-	curl -sSL https://raw.githubusercontent.com/jessfraz/dotfiles/master/etc/systemd/system/syncthing@.service > /etc/systemd/system/syncthing@.service
+	curl -sSL https://raw.githubusercontent.com/jessfraz/dotfiles/master/etc/systemd/system/syncthing@.service >/etc/systemd/system/syncthing@.service
 
 	systemctl daemon-reload
 	systemctl enable "syncthing@${USERNAME}"
@@ -445,17 +440,16 @@ install_wmapps() {
 
 	# update clickpad settings
 	mkdir -p /etc/X11/xorg.conf.d/
-	curl -sSL https://raw.githubusercontent.com/jamesmstone/dotfiles/master/etc/X11/xorg.conf.d/50-synaptics-clickpad.conf > /etc/X11/xorg.conf.d/50-synaptics-clickpad.conf
+	curl -sSL https://raw.githubusercontent.com/jamesmstone/dotfiles/master/etc/X11/xorg.conf.d/50-synaptics-clickpad.conf >/etc/X11/xorg.conf.d/50-synaptics-clickpad.conf
 
 	# add xorg conf
-	curl -sSL https://raw.githubusercontent.com/jamesmstone/dotfiles/master/etc/X11/xorg.conf > /etc/X11/xorg.conf
+	curl -sSL https://raw.githubusercontent.com/jamesmstone/dotfiles/master/etc/X11/xorg.conf >/etc/X11/xorg.conf
 
 	# get correct sound cards on boot
 	# curl -sSL https://raw.githubusercontent.com/jamesmstone/dotfiles/master/etc/modprobe.d/intel.conf > /etc/modprobe.d/intel.conf
 
 	# pretty fonts
-	curl -sSL https://raw.githubusercontent.com/jamesmstone/dotfiles/master/etc/fonts/local.conf > /etc/fonts/local.conf
-
+	curl -sSL https://raw.githubusercontent.com/jamesmstone/dotfiles/master/etc/fonts/local.conf >/etc/fonts/local.conf
 
 	echo "Fonts file setup successfully now run:"
 	echo "	dpkg-reconfigure fontconfig-config"
@@ -463,76 +457,74 @@ install_wmapps() {
 	echo "	Autohinter, Automatic, No."
 	echo "Run: "
 	echo "	dpkg-reconfigure fontconfig"
-	
+
 	dpkg --configure -a
 }
 
 get_dotfiles() {
 	# create subshell
 	(
-	cd "$HOME"
+		cd "$HOME"
 
-	# install dotfiles from repo
-	git clone git@github.com:jamesmstone/dotfiles.git "/home/$USERNAME/dotfiles"
-	cd "/home/$USERNAME/dotfiles"
+		# install dotfiles from repo
+		git clone git@github.com:jamesmstone/dotfiles.git "/home/$USERNAME/dotfiles"
+		cd "/home/$USERNAME/dotfiles"
 
+		# installs all the things
+		make bin
+		make dotfiles
 
-	# installs all the things
-	make bin
-	make dotfiles
+		# enable dbus for the user session
+		# systemctl --user enable dbus.socket
 
-	# enable dbus for the user session
-	# systemctl --user enable dbus.socket
+		sudo systemctl enable i3lock@${USERNAME}
+		sudo systemctl enable suspend-sedation.service
 
-	sudo systemctl enable i3lock@${USERNAME}
-	sudo systemctl enable suspend-sedation.service
-
-	cd "$HOME"
-	mkdir -p ~/Pictures
-	mkdir -p ~/Torrents
+		cd "$HOME"
+		mkdir -p ~/Pictures
+		mkdir -p ~/Torrents
 	)
 
-	install_vim;
+	install_vim
 }
 
 install_vim() {
 	# create subshell
 	(
-	cd "$HOME"
+		cd "$HOME"
 
-	# install .vim files
-	git clone --recursive git@github.com:jessfraz/.vim.git "$HOME/.vim"
-	ln -snf "$HOME/.vim/vimrc" "$HOME/.vimrc"
-	sudo ln -snf "$HOME/.vim" /root/.vim
-	sudo ln -snf "$HOME/.vimrc" /root/.vimrc
+		# install .vim files
+		git clone --recursive git@github.com:jessfraz/.vim.git "$HOME/.vim"
+		ln -snf "$HOME/.vim/vimrc" "$HOME/.vimrc"
+		sudo ln -snf "$HOME/.vim" /root/.vim
+		sudo ln -snf "$HOME/.vimrc" /root/.vimrc
 
+		# alias vim dotfiles to neovim
+		mkdir -p ${XDG_CONFIG_HOME:=$HOME/.config}
+		ln -snf "/home/$USERNAME/.vim" $XDG_CONFIG_HOME/nvim
+		ln -snf "/home/$USERNAME/.vimrc" $XDG_CONFIG_HOME/nvim/init.vim
+		# do the same for root
+		sudo mkdir -p /root/.config
+		sudo ln -snf "/home/$USERNAME/.vim" /root/.config/nvim
+		sudo ln -snf "/home/$USERNAME/.vimrc" /root/.config/nvim/init.vim
 
-	# alias vim dotfiles to neovim
-	mkdir -p ${XDG_CONFIG_HOME:=$HOME/.config}
-	ln -snf "/home/$USERNAME/.vim" $XDG_CONFIG_HOME/nvim
-	ln -snf "/home/$USERNAME/.vimrc" $XDG_CONFIG_HOME/nvim/init.vim
-	# do the same for root
-	sudo mkdir -p /root/.config
-	sudo ln -snf "/home/$USERNAME/.vim" /root/.config/nvim
-	sudo ln -snf "/home/$USERNAME/.vimrc" /root/.config/nvim/init.vim
+		# update alternatives to neovim
+		sudo update-alternatives --install /usr/bin/vi vi /usr/bin/nvim 60
+		sudo update-alternatives --config vi
+		sudo update-alternatives --install /usr/bin/vim vim /usr/bin/nvim 60
+		sudo update-alternatives --config vim
+		sudo update-alternatives --install /usr/bin/editor editor /usr/bin/nvim 60
+		sudo update-alternatives --config editor
 
-	# update alternatives to neovim
-	sudo update-alternatives --install /usr/bin/vi vi /usr/bin/nvim 60
-	sudo update-alternatives --config vi
-	sudo update-alternatives --install /usr/bin/vim vim /usr/bin/nvim 60
-	sudo update-alternatives --config vim
-	sudo update-alternatives --install /usr/bin/editor editor /usr/bin/nvim 60
-	sudo update-alternatives --config editor
-
-	# install things needed for deoplete for vim
-	sudo apt-get update
-	sudo apt-get install -y \
-		python3-pip \
-		--no-install-recommends
-	pip3 install -U \
-		setuptools \
-		wheel \
-		neovim
+		# install things needed for deoplete for vim
+		sudo apt-get update
+		sudo apt-get install -y \
+			python3-pip \
+			--no-install-recommends
+		pip3 install -U \
+			setuptools \
+			wheel \
+			neovim
 	)
 }
 
@@ -543,7 +535,7 @@ install_virtualbox() {
 	if [ "" == "$PKG_OK" ]; then
 		echo "No libvpx1. Installing libvpx1."
 		jessie_sources=/etc/apt/sources.list.d/jessie.list
-		echo "deb http://httpredir.debian.org/debian jessie main contrib non-free" > $jessie_sources
+		echo "deb http://httpredir.debian.org/debian jessie main contrib non-free" >$jessie_sources
 
 		apt-get update
 		apt-get install -y -t jessie libvpx1 \
@@ -553,7 +545,7 @@ install_virtualbox() {
 		rm $jessie_sources
 	fi
 
-	echo "deb http://download.virtualbox.org/virtualbox/debian vivid contrib" >> /etc/apt/sources.list.d/virtualbox.list
+	echo "deb http://download.virtualbox.org/virtualbox/debian vivid contrib" >>/etc/apt/sources.list.d/virtualbox.list
 	curl -sSL https://www.virtualbox.org/download/oracle_vbox.asc | apt-key add -
 
 	apt-get update
@@ -578,11 +570,11 @@ install_vagrant() {
 		install_virtualbox
 	fi
 
-	tmpdir=`mktemp -d`
+	tmpdir=$(mktemp -d)
 	(
-	cd $tmpdir
-	curl -sSL -o vagrant.deb https://releases.hashicorp.com/vagrant/${VAGRANT_VERSION}/vagrant_${VAGRANT_VERSION}_x86_64.deb
-	dpkg -i vagrant.deb
+		cd $tmpdir
+		curl -sSL -o vagrant.deb https://releases.hashicorp.com/vagrant/${VAGRANT_VERSION}/vagrant_${VAGRANT_VERSION}_x86_64.deb
+		dpkg -i vagrant.deb
 	)
 
 	rm -rf $tmpdir
@@ -590,7 +582,6 @@ install_vagrant() {
 	# install plugins
 	vagrant plugin install vagrant-vbguest
 }
-
 
 usage() {
 	echo -e "install.sh\n\tThis script installs my basic setup for a debian laptop\n"
@@ -643,7 +634,7 @@ main() {
 	elif [[ $cmd == "syncthing" ]]; then
 		install_syncthing
 	elif [[ $cmd == "ssh" ]]; then
-		generate_ssh		
+		generate_ssh
 	elif [[ $cmd == "vagrant" ]]; then
 		install_vagrant "$2"
 	else

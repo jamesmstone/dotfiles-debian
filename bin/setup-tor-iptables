@@ -38,7 +38,7 @@ main() {
 	local action="-A"
 	# check existance of a rule, if it exists change iptables action
 	# to delete the rules instead of append
-	if iptables -t nat -C OUTPUT -p tcp --syn -j REDIRECT --to-ports "$trans_port" 2>/dev/null ; then
+	if iptables -t nat -C OUTPUT -p tcp --syn -j REDIRECT --to-ports "$trans_port" 2>/dev/null; then
 		echo "[WARNING]: DELETING iptables rules for tor redirection."
 		echo "If this was not your intent, rerun this script to append the rules again."
 		action="-D"
