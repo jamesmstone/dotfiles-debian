@@ -13,7 +13,7 @@ dcleanup(){
 }
 dupdate(){
 	# from http://stackoverflow.com/a/32310478/1432051
-	docker images | awk '/^REPOSITORY|\<none\>/ {next} {print $1}' | xargs -n 1 docker pull
+	docker images | awk '/^REPOSITORY|\<none\>/ {next} {print $1}' | xargs -n 1 -P8 docker pull
 }
 del_stopped(){
 	local name=$1
