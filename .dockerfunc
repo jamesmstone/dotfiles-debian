@@ -1357,5 +1357,8 @@ command_not_found_handle () {
 
 
 ubuntu_playground(){
-	 docker run -it -v "$(pwd)":/home/james --rm ubuntu bash
+	echo "Command: docker run -it -v \"$(pwd)\":/home/james --rm ubuntu bash";
+	echo "Warning run with a current dir, volumed to: /home/james";
+	echo "Don't delete everything!!!";
+	docker run -it -v "$(pwd)":/home/james --rm ubuntu bash
 }
