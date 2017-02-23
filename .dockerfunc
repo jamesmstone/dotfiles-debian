@@ -1267,6 +1267,15 @@ phpstorm(){
            -v "${GOPATH}":/home/developer/go \
            jamesmstone/docker-phpstorm
 }
+#
+# PHP related
+#
+ composer(){
+ 	docker run --rm -it \
+	    -v "$(pwd)":/app \
+	    --user $(id -u):$(id -g) \
+	    composer "$@"
+ }
 
 #
 # Javascript related
