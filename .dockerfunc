@@ -1217,7 +1217,7 @@ atom(){
 eclipse(){
 	del_stopped eclipse
 
-	docker run -ti --rm \
+	docker run -ti --rm \"
 	         -e DISPLAY=$DISPLAY \
 		 -v /tmp/.X11-unix:/tmp/.X11-unix \
 		 -v "${HOME}/.eclipse":/home/developer \
@@ -1270,7 +1270,14 @@ phpstorm(){
 #
 # PHP related
 #
- composer(){
+php(){
+	docker run -it --rm \
+		-v "$(pwd)":/usr/src/myapp \
+		-w /usr/src/myapp \
+		php:7.0-cli php "$@"
+}
+
+composer(){
  	docker run --rm -it \
 	    -v "$(pwd)":/app \
 	    --user $(id -u):$(id -g) \
