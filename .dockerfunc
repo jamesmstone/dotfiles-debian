@@ -944,6 +944,11 @@ steam(){
 #		  gbrks/syncthing
 
 #}
+
+svn(){
+	 docker run -it --rm -v "$(pwd)":/src jgsqware/svn-client "$@"
+}
+
 t(){
 	docker run -t --rm \
 		-v $HOME/.trc:/root/.trc \
