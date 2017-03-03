@@ -15,6 +15,10 @@ dupdate(){
 	# from http://stackoverflow.com/a/32310478/1432051
 	docker images | awk '/^REPOSITORY|\<none\>/ {next} {print $1}' | xargs -n 1 -P8 docker pull
 }
+dcleandate(){
+	dupdate
+	dcleanup
+}
 del_stopped(){
 	local name=$1
 	local state=$(docker inspect --format "{{.State.Running}}" $name 2>/dev/null)
@@ -427,6 +431,9 @@ irssi() {
 		--name irssi \
 		${DOCKER_REPO_PREFIX}/irssi
 }
+
+alias jenkins="docker run --name jenkins -p 8080:8080 -p 50000:50000 -v /var/jenkins_home jenkins "
+
 john(){
 	local file=$(realpath $1)
 
@@ -1215,7 +1222,7 @@ atom(){
 eclipse(){
 	del_stopped eclipse
 
-	docker run -ti --rm \
+	docker run -ti --rm \"
 	         -e DISPLAY=$DISPLAY \
 		 -v /tmp/.X11-unix:/tmp/.X11-unix \
 		 -v "${HOME}/.eclipse":/home/developer \
@@ -1265,6 +1272,22 @@ phpstorm(){
            -v "${GOPATH}":/home/developer/go \
            jamesmstone/docker-phpstorm
 }
+#
+# PHP related
+#
+php(){
+	docker run -it --rm \
+		-v "$(pwd)":/usr/src/myapp \
+		-w /usr/src/myapp \
+		php:7.0-cli php "$@"
+}
+
+composer(){
+ 	docker run --rm -it \
+	    -v "$(pwd)":/app \
+	    --user $(id -u):$(id -g) \
+	    composer "$@"
+ }
 
 #
 # Javascript related
@@ -1346,5 +1369,8 @@ command_not_found_handle () {
 
 
 ubuntu_playground(){
-	 docker run -it -v "$(pwd)":/home/james --rm ubuntu bash
+	echo "Command: docker run -it -v \"$(pwd)\":/home/james --rm ubuntu bash";
+	echo "Warning run with a current dir, volumed to: /home/james";
+	echo "Don't delete everything!!!";
+	docker run -it -v "$(pwd)":/home/james --rm ubuntu bash
 }
