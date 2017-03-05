@@ -15,8 +15,9 @@ set -e
 set -o pipefail
 
 # Print a usage message and exit.
-usage() {
-	local name=$(basename "$0")
+usage(){
+	local name
+	name=$(basename "$0")
 
 	cat >&2 <<-EOF
 	${name} [name] [path/to/.iso]

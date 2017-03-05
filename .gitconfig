@@ -58,7 +58,7 @@
 
 	# Remove branches that have already been merged with master
 	# a.k.a. ‘delete merged’
-	dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
+	dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d; git remote -v update -p"
 
 	# List contributors with number of commits
 	contributors = shortlog --summary --numbered
@@ -186,11 +186,6 @@
 #[remote "origin"]
 	#fetch = +refs/pull/*/head:refs/remotes/origin/pull/*
 
-#[github]
-#	user = jamesmstone
-#[init]
-#	templatedir = ~/.git_template/template
-
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
@@ -199,3 +194,9 @@
 	gpgsign = true
 [http]
 	cookiefile = ~/.gitcookies
+
+[gpg]
+	program = gpg
+[credential]
+	helper = store --file ~/.git-credentials
+	helper = cache --timeout 30000

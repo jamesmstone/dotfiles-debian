@@ -30,15 +30,16 @@ usage() {
 	exit 1
 }
 
+
 [ "$CLOUDFLARE_APIKEY" ] || usage
 [ "$CLOUDFLARE_EMAIL" ] || usage
 
 # get all the tor exit nodes that can reach a given IP
-get_tor_exits() {
+get_tor_exits(){
 	local ip=$1
 
 	if [[ -z "$ip" ]]; then
-		echo >&2 "pass an ip to return the tor nodes that can reach it."
+		>&2 echo "pass an ip to return the tor nodes that can reach it."
 		return 1
 	fi
 
@@ -46,11 +47,11 @@ get_tor_exits() {
 }
 
 # get the cloudflare threat score for the exit node
-get_threat_score() {
+get_threat_score(){
 	local exit=$1
 
 	if [[ -z "$exit" ]]; then
-		echo >&2 "pass an exit node ip to get the cloudflare threat score."
+		>&2 echo "pass an exit node ip to get the cloudflare threat score."
 		return 1
 	fi
 
@@ -65,9 +66,9 @@ get_threat_score() {
 	result=$(echo "$response" | jq --raw-output '.result')
 	if [[ "$result" != "success" ]]; then
 		msg=$(echo "$response" | jq --raw-output '.msg')
-		echo >&2 "[ERROR]: api response for exit node: ${exit} failed with:"
-		echo >&2 "        status:  ${status}"
-		echo >&2 "        message: ${msg}"
+		>&2 echo "[ERROR]: api response for exit node: ${exit} failed with:"
+		>&2 echo "        status:  ${result}"
+		>&2 echo "        message: ${msg}"
 		exit 1
 	fi
 
@@ -75,9 +76,9 @@ get_threat_score() {
 }
 
 main() {
-	local ip=$1 # ip to check exit nodes reach
+	local ip=$1  # ip to check exit nodes reach
 
-	exitnodes=($(get_tor_exits "${ip}"))
+	exitnodes=( $(get_tor_exits "${ip}") )
 
 	echo -e "IP\t\t\tSCORE\t\tTOR?\tRAW"
 
