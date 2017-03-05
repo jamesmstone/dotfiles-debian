@@ -1219,6 +1219,20 @@ atom(){
          ${DOCKER_REPO_PREFIX}/atom \
 	 "$@"
 }
+
+clion(){
+	del_stopped clion
+	docker run \
+       --rm \
+       --name clion \
+       --net "host" \
+       --env DISPLAY=unix$DISPLAY \
+       --user "$(id -u)":"$(id -g)" \
+       --volume /tmp/.X11-unix:/tmp/.X11-unix \
+			 -v "$(dirname "$(pwd)")":"$(dirname "$(pwd)")" \
+			 -w "$(pwd)" \
+       kurron/docker-clion:latest "$@"
+}
 eclipse(){
 	del_stopped eclipse
 
