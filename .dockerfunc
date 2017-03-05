@@ -1304,18 +1304,15 @@ eclipse(){
 
 }
 idea(){
-del_stopped idea
-
-PREF_DIR=${HOME}/.config/IDEA
-docker run --rm -it \
-	   --name idea \
+	del_stopped idea
+	docker run --rm -it \
            --net="host" \
-           --privileged=true \
-           -e DISPLAY=${DISPLAY} \
-           -v /tmp/.X11-unix:/tmp/.X11-unix \
-           -v ${PREF_DIR}:/config \
+	   --privileged=true \
+       	   -e DISPLAY=${DISPLAY} \
+	   -v /tmp/.X11-unix:/tmp/.X11-unix \
+	   -v ${HOME}/.config/idea:/config \
            -v "$(dirname "$(pwd)")":/home/root/ \
-           jamesmstone/idea-ultimate
+        jamesmstone/idea-ultimate
 }
 leksah(){
 	docker run --rm \
