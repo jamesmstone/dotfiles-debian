@@ -383,6 +383,9 @@ gcalcli(){
 		--name gcalcli \
 		${DOCKER_REPO_PREFIX}/gcalcli "$@"
 }
+gpsbabel(){
+	docker run --rm -it -v "$(pwd)":/wd -w /wd jamesmstone/gpsbabel "$@"
+}
 dgcloud(){
 	docker run --rm -it \
 		-v "${HOME}/.gcloud:/root/.config/gcloud" \
