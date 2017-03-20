@@ -1376,11 +1376,10 @@ node(){
         node node "$@"
 }
 npm(){
-    del_stopped node
-        #-v $HOME/.docker/node:/usr/local/lib \
     docker run -it --rm \
         -v /etc/localtime:/etc/localtime:ro \
-        -v $(pwd):/app \
+         --user="$(id -u):$(id -g)" \
+	-v $(pwd):/app \
         -w /app \
         node npm "$@"
 }
