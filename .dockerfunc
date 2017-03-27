@@ -275,12 +275,12 @@ chromium(){
 }
 
 cmd(){
-			docker run \
-			 	-it \
-				--rm \
-				-v "$(pwd)":"$(pwd)"  \
-				-w "$(pwd)" \
-				${DOCKER_REPO_PREFIX}/wine wine cmd "$@"
+	docker run \
+		-it \
+		--rm \
+		-v "$(pwd)":"$(pwd)"  \
+		-w "$(pwd)" \
+		${DOCKER_REPO_PREFIX}/wine wine cmd "$@"
 }
 
 consul(){
