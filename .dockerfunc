@@ -250,11 +250,12 @@ chromium(){
 
 	# one day remove /etc/hosts bind mount when effing
 	# overlay support inotify, such bullshit
-	sudo docker run -d \
+	docker run -d \
 		--memory 3gb \
 		-v /etc/localtime:/etc/localtime:ro \
 		-v /tmp/.X11-unix:/tmp/.X11-unix \
 		-e DISPLAY=unix$DISPLAY \
+		-u "$(id -u)":"$(id -g)" \
 		-v $HOME/Downloads:/root/Downloads \
 		-v $HOME/Pictures:/root/Pictures \
 		-v $HOME/Torrents:/root/Torrents \
