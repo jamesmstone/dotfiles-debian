@@ -998,9 +998,9 @@ steam(){
 
 #}
 
-svn(){
-	 docker run -it --rm -v "$(pwd)":/src jgsqware/svn-client "$@"
-}
+#svn(){
+#	 docker run -it --rm -v "$(pwd)":/src jgsqware/svn-client "$@"
+#}
 
 t(){
 	docker run -t --rm \
@@ -1206,6 +1206,18 @@ watchman(){
 		-v "${HOME}/Downloads:/root/Downloads" \
 		--name watchman \
 		${DOCKER_REPO_PREFIX}/watchman --foreground
+}
+webstorm(){
+	del_stopped webstorm
+	docker run  \
+        	-v /etc/localtime:/etc/localtime:ro \
+		-v /tmp/.X11-unix:/tmp/.X11-unix \
+		-e DISPLAY=${DISPLAY} \
+		--user="$(id -u):$(id -g)" \
+		-v "$(dirname "$(pwd)")":"$(dirname "$(pwd)")" \
+		-w "$(pwd)" \
+		--name webstorm \
+        psharkey/webstorm
 }
 weeslack(){
 	del_stopped weeslack
