@@ -1282,7 +1282,8 @@ atom(){
 
     docker run -it --rm \
         --name atom \
-        --net host \
+        --user="$(id -u):$(id -g)" \
+	--net host \
         --memory 1gb \
         --device /dev/snd \
         --device /dev/dri \
