@@ -451,6 +451,12 @@ irssi() {
 	# relies_on notify_osd
 
 	docker run --rm -it \
+		--user root \
+		-v "${HOME}/.irssi:/home/user/.irssi" \
+		${DOCKER_REPO_PREFIX}/irssi \
+		chown -R user /home/user/.irssi
+
+	docker run --rm -it \
 		-v /etc/localtime:/etc/localtime:ro \
 		-v "${HOME}/.irssi:/home/user/.irssi" \
 		--read-only \
@@ -1428,37 +1434,38 @@ ws(){		# Webserver current dir
 	 nginx
 }
 
-###
-### Awesome sauce by @jpetazzo
-###
-command_not_found_handle () {
-	# Check if there is a container image with that name
-	if ! docker inspect --format '{{ .Author }}' "$1" >&/dev/null ; then
-		echo "$0: $1: command not found"
-		return
-	fi
-
-	# Check that it's really the name of the image, not a prefix
-	if docker inspect --format '{{ .Id }}' "$1" | grep -q "^$1" ; then
-		echo "$0: $1: command not found"
-		return
-	fi
-
-	docker run -ti -u "$(whoami)" -w "$HOME" \
-		"$(env | cut -d= -f1 | awk '{print "-e", $1}')" \
-		--device /dev/snd \
-		-v /etc/passwd:/etc/passwd:ro \
-		-v /etc/group:/etc/group:ro \
-		-v /etc/localtime:/etc/localtime:ro \
-		-v /home:/home \
-		-v /tmp/.X11-unix:/tmp/.X11-unix \
-		"${DOCKER_REPO_PREFIX}/${1}" "$@"
-}
-
-
 ubuntu_playground(){
 	echo "Command: docker run -it -v \"$(pwd)\":/home/james --rm ubuntu bash";
 	echo "Warning run with a current dir, volumed to: /home/james";
 	echo "Don't delete everything!!!";
 	docker run -it -v "$(pwd)":/home/james --rm ubuntu bash
 }
+
+###
+### Awesome sauce by @jpetazzo
+###
+if command -v "docker" &>/dev/null; then
+	command_not_found_handle () {
+		# Check if there is a container image with that name
+		if ! docker inspect --format '{{ .Author }}' "$1" >&/dev/null ; then
+			echo "$0: $1: command not found"
+			return
+		fi
+
+		# Check that it's really the name of the image, not a prefix
+		if docker inspect --format '{{ .Id }}' "$1" | grep -q "^$1" ; then
+			echo "$0: $1: command not found"
+			return
+		fi
+
+
+		docker run -ti -u "$(whoami)" -w "$HOME" \
+			"$(env | cut -d= -f1 | awk '{print "-e", $1}')" \
+			--device /dev/snd \
+			-v /etc/passwd:/etc/passwd:ro \
+			-v /etc/group:/etc/group:ro \
+			-v /etc/localtime:/etc/localtime:ro \
+			-v /home:/home \
+			-v /tmp/.X11-unix:/tmp/.X11-unix \
+			"${DOCKER_REPO_PREFIX}/${1}" "$@"
+	}
