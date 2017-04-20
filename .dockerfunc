@@ -1315,7 +1315,7 @@ clion(){
 eclipse(){
 	del_stopped eclipse
 
-	docker run -ti --rm \"
+	docker run -ti --rm \
 	         -e DISPLAY=$DISPLAY \
 		 -v /tmp/.X11-unix:/tmp/.X11-unix \
 		 -v "${HOME}/.eclipse":/home/developer \
