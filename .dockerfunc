@@ -1213,7 +1213,6 @@ webstorm(){
         	-v /etc/localtime:/etc/localtime:ro \
 		-v /tmp/.X11-unix:/tmp/.X11-unix \
 		-e DISPLAY=${DISPLAY} \
-		--user="$(id -u):$(id -g)" \
 		-v "$(dirname "$(pwd)")":"$(dirname "$(pwd)")" \
 		-w "$(pwd)" \
 		--name webstorm \
