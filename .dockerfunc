@@ -1307,15 +1307,16 @@ atom(){
 clion(){
 	del_stopped clion
 	docker run \
-       --rm \
-       --name clion \
-       --net "host" \
-       --env DISPLAY=unix$DISPLAY \
-       --user "$(id -u)":"$(id -g)" \
-       --volume /tmp/.X11-unix:/tmp/.X11-unix \
-			 -v "$(dirname "$(pwd)")":"$(dirname "$(pwd)")" \
-			 -w "$(pwd)" \
-       kurron/docker-clion:latest "$@"
+		--rm \
+		--name clion \
+		--net "host" \
+		--env DISPLAY=unix$DISPLAY \
+		--user "$(id -u)":"$(id -g)" \
+		--volume /tmp/.X11-unix:/tmp/.X11-unix \
+		-v "$(dirname "$(pwd)")":"$(dirname "$(pwd)")" \
+		-w "$(pwd)" \
+		--security-opt seccomp=unconfined \
+	kurron/docker-clion:latest "$@"
 }
 eclipse(){
 	del_stopped eclipse
