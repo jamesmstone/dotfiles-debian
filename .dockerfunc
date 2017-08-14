@@ -272,7 +272,9 @@ chromium(){
 		--name chromium \
 		${DOCKER_REPO_PREFIX}/chromium --user-data-dir=/data \
 		--proxy-server="$proxy" \
-		--host-resolver-rules="$map" $args
+		--host-resolver-rules="$map" \
+		--force-device-scale-factor=1.4 \
+		$args
 }
 
 cmd(){
